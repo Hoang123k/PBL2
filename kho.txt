@@ -1,0 +1,2 @@
+HH01|Banh mi|Thuc pham|O|20|30000
+HH02|Mi tom|Thuc pham|Goi|10|8000

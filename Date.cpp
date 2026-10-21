@@ -66,19 +66,23 @@ Date& Date::operator--(){
 }
 
 
-int Date::getd(){
+int Date::getd()const{
     return this->d;
 }
 
-int Date::getm(){
+int Date::getm() const{
     return this->m;
 }
 
-int Date::gety(){
+int Date::gety() const{
     return this->y;
 }
-ostream& operator<< (ostream& o, Date& p){
-    o << p.getd() << "/" << p.getm() << "/" << p.gety(); 
+ostream& operator<< (ostream& o,const Date& p){
+    string s = to_string(p.d) + "/" + 
+                   to_string(p.m) + "/" + 
+                   to_string(p.y);
+
+    o << s;
     return o;
 }
 

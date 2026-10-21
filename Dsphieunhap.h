@@ -8,4 +8,7 @@ class Dsphieunhap{
         Dsphieunhap();
         ~Dsphieunhap();
         // void incacphieunhap();
+
+        friend void docfile(Dsphieunhap&, const string&);
+        void show();
 };

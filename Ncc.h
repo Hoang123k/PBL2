@@ -2,7 +2,7 @@
 #include<iostream>
 using namespace std;
 class Ncc{
-    private:
+    protected:
         string mancc;
         string tenncc;
         string sdtncc;
@@ -22,5 +22,6 @@ class Ncc{
         void settenncc(string);
         void setsdtncc(string);
         void setdiachincc(string);
+
 
 };

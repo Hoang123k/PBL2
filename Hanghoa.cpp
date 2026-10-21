@@ -1,5 +1,7 @@
 #include "Hanghoa.h"
 #include<string.h>
+#include<iomanip>
+
 Hanghoa::Hanghoa(){}
 Hanghoa::~Hanghoa(){}
 Hanghoa::Hanghoa(const string mahang, const string tenhang, 
@@ -50,10 +52,11 @@ void Hanghoa::setdongia(int dongia){
 }
 
 void Hanghoa::show(){
-    cout << "Ma hang: " << this->mahang << " | "
-        << "Ten hang: " << this->tenhang << " | "
-        << "Loai hang: " << this->loaihang << " | "
-        << "Don vi tinh: " << this->donvitinh << " | "
-        << "So luong: " << this->soluong << " | "
-        << "Don gia: " << this->dongia << " | " << endl;
+    cout << left
+        << setw(10) << this->mahang
+        << setw(18) << this->tenhang
+        << setw(12)  << this->loaihang
+        << setw(15)  << this->donvitinh
+        << setw(12)  << this->soluong
+        << setw(10) << this->dongia << endl;
 }

@@ -1,4 +1,6 @@
 #include "Ncc.h"
+#include<fstream>
+#include<sstream>
 Ncc::Ncc(){}
 Ncc::~Ncc(){}
 Ncc::Ncc(const string mancc, const string tenncc,

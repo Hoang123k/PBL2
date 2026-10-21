@@ -20,4 +20,7 @@ class Phieunhap{
         void setmaphieu(string);
         void setngay(Date);
         void setsoluong(int);
+
+        friend void docfile(Phieunhap&, const string&);
+        void show();
 };
