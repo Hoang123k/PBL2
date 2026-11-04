@@ -14,7 +14,7 @@ inline void menu() {
     cout << " 2. Nhà cung cấp" << endl;
     cout << " 3. Chi tiết phiếu nhập" << endl;
     cout << " 4. Danh sách phiếu nhập" << endl;
-    cout << " 5. Tải lại dữ liệu (Reload từ File)" << endl;
+    // cout << " 5. Tải lại dữ liệu (Reload từ File)" << endl;
     cout << " 0. Thoát chương trình                        " << endl;
     cout << "==============================================" << endl;
 }

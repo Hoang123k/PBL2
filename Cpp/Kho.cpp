@@ -60,8 +60,8 @@ void docfile(Kho &k, const string &filename)
         getline(ss, gia_str, '|');
         getline(ss, thuoctinh, '|');
 
-        int soluong = sl_str.empty() ? 0 : stoi(sl_str);
-        int dongia = gia_str.empty() ? 0 : stoi(gia_str);
+        int soluong = sl_str.empty() ? 0 : stoll(sl_str);
+        int dongia = gia_str.empty() ? 0 : stoll(gia_str);
 
         if (loaihang == "TP" || loaihang == "tp")
         {
