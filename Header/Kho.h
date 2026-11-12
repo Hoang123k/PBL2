@@ -16,8 +16,11 @@ public:
     void show() const;
     // Them
     void add();
+    bool check_ma(const std::string);
+    bool check_ten(const std::string);
     // update
     void update();
+
     // sort
     void sortByMaHang(std::vector<std::unique_ptr<Hanghoa>>& kho, int low, int high);
     void sortByTenHang(std::vector<std::unique_ptr<Hanghoa>>& kho, int low, int high);

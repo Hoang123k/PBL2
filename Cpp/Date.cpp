@@ -141,3 +141,18 @@ const Date Date::operator--(int){
     --*this;
     return temp;
 }
+
+string Date_to_string(Date& date){
+    string s = "";
+    if (date.getd() < 10) {
+        s += "0";
+    }
+    s += to_string(date.getd()) + "/";
+    if (date.getm() < 10) {
+        s += "0";
+    }
+    s += to_string(date.getm()) + "/";
+    s += to_string(date.gety());
+
+    return s;
+}

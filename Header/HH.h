@@ -20,7 +20,6 @@ inline void HH_function(Kho& kho1, int choice1) {
     case 3:
         kho1.update();
         break;
-
     case 4:
         menu_HH_Sort();
         if (!readInt("Nhap lua chon sap xep: ", subChoice)) {

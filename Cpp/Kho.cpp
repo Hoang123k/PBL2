@@ -75,33 +75,70 @@ void docfile(Kho &k, const string &filename)
     k.soluonghang = k.kho.size();
     cout << "Doc file Kho thanh cong!" << endl;
 }
+bool Kho::check_ma(const string ma){
+    for(size_t i=0;i<kho.size();i++){
+        if(ma == kho[i]->getmahang()){
+            return false;
+        }
+    }
+    return true;
+}
+bool Kho::check_ten(const string ten){
+    for(size_t i=0;i<kho.size();i++){
+        if(ten == kho[i]->gettenhang()){
+            return false;
+        }
+    }
+    return true;
+}
 void Kho::add()
 {
-    cout << "\n================ THEM MAT HANG MOI ================" << endl;
+    cout << "\n================ THÊM MẶT HÀNG MỚI ================" << endl;
     string phanloai, mahang, tenhang, donvitinh, sl, gia, thuoctinh;
 
     do
     {
-        cout << "Nhap phan loai (TP - Thuc pham / VT - Vat tu): ";
+        cout << "Nhập phân loại(Thực phẩm: TP/tp - Vật tư: VT/vt ): ";
         cin >> phanloai;
         cin.ignore();
         if (phanloai != "TP" && phanloai != "tp" && phanloai != "VT" && phanloai != "vt")
         {
-            cout << "Phan loai khong hop le! Vui long nhap TP hoac VT.\n";
+            cout << "Phân loại hàng không hợp lệ! Xin nhập VT/vt hoặc TP/tp.\n";
             continue;
         }
-
-        cout << "Nhap ma hang: ";
+        cout << "Nhập mã hàng: ";
         getline(cin, mahang);
-        cout << "Nhap ten hang: ";
+        while(check_ma(mahang) == false){
+            cout << "Mã hàng đã tồn tại. Xin nhập lại mã hàng!" << endl;
+            cout << "Nhập mã hàng: ";
+            getline(cin, mahang);
+
+        }
+        cout << "Nhập tên hàng: ";
         getline(cin, tenhang);
-        cout << "Nhap don vi tinh: "; // Đã thêm lại dòng cout hướng dẫn
+        while(check_ten(tenhang) == false){
+            cout << "Tên hàng đã tồn tại. Xin nhập lại tên hàng!" << endl;
+            cout << "Nhập tên hàng: ";
+            getline(cin, tenhang);
+
+        }
+        cout << "Nhập đơn vị tính: ";
         getline(cin, donvitinh);
-        cout << "Nhap so luong: ";
+        cout << "Nhập số lượng: ";
         getline(cin, sl);
-        cout << "Nhap don gia: ";
+        while(stoll(sl)<=0){
+            cout << "Lỗi số lượng! Xin hãy nhập lại." << endl;
+            cout << "Nhập số lượng: ";
+            getline(cin, sl);
+        }
+        cout << "Nhập đơn giá: ";
         getline(cin, gia);
-        cout << "Nhap thuoc tinh (HSD hoac dac diem): ";
+        while(stoll(gia)<=0){
+            cout << "Lỗi đơn giá! Xin hãy nhập lại." << endl;
+            cout << "Nhập đơn giá: ";
+            getline(cin, sl);
+        }
+        cout << "Nhập thuộc tính(NSX hoặc đặc điểm): ";
         getline(cin, thuoctinh);
 
         int soluong = sl.empty() ? 0 : stoll(sl);
@@ -209,9 +246,9 @@ int Kho::searchByMaHang(const string &ma) const
 void Kho::searchByTenHang(const string& ten) const {
     if (kho.empty()) {
         cout << "Kho hang hoa rong. Khong co hang hoa de tim kiem." << endl;
-        return;
+        return ;
     }
-    bool found = false; 
+     bool found = false;
     try {
         for (const auto& hang : kho) {
             if (hang->gettenhang().find(ten) != string::npos) {
@@ -220,7 +257,7 @@ void Kho::searchByTenHang(const string& ten) const {
             }
         }
         if (!found) {
-            throw runtime_error("Khong tim thay hang hoa voi ten: " + ten);
+            throw runtime_error("Khong tim thay hang hoa voi tên: " + ten);
         }
     }
     catch (const runtime_error& e) {
@@ -318,8 +355,10 @@ void Kho::update() {
     getline(cin, loaihang);
     cout << "Don vi tinh (" << hanghoa->getdonvitinh() << "): ";
     getline(cin, donvitinh);
+    cout << "Nhập +/- để tăng/giảm số lượng hoặc nhập số bình thường để cập nhật số lượng mới" << endl;
     cout << "So luong (" << hanghoa->getsoluong() << "): ";
     getline(cin, sl_str);
+    cout << "Nhập +/- để tăng/giảm đơn giá hoặc nhập số bình thường để cập nhật đơn giá mới" << endl;
     cout << "Don gia (" << hanghoa->getdongia() << "): ";
     getline(cin, gia_str);
     cout << "Thuoc tinh (" << hanghoa->getthuoctinh() << "): ";
@@ -328,8 +367,22 @@ void Kho::update() {
     if (!tenhang.empty()) hanghoa->settenhang(tenhang);
     if (!loaihang.empty()) hanghoa->setloaihang(loaihang);
     if (!donvitinh.empty()) hanghoa->setdonvitinh(donvitinh);
-    if (!sl_str.empty()) hanghoa->setsoluong(stoll(sl_str));
-    if (!gia_str.empty()) hanghoa->setdongia(stoll(gia_str));
+    if (!sl_str.empty()){
+        if(sl_str[0] == '-' || sl_str[0] == '+'){
+            hanghoa->setsoluong(hanghoa->getsoluong()+stoll(sl_str));
+        }
+        else{
+            hanghoa->setsoluong(stoll(sl_str));
+        }
+    } 
+    if (!gia_str.empty()){
+        if(gia_str[0] == '-' || gia_str[0] == '+'){
+            hanghoa->setdongia(hanghoa->getdongia()+stoll(gia_str));
+        }
+        else{
+            hanghoa->setdongia(stoll(gia_str));
+        }
+    }
 
     if (loaihang == "TP" || loaihang == "tp") {
         ThucPham* tp = dynamic_cast<ThucPham*>(hanghoa.get());
