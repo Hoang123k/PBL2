@@ -11,8 +11,12 @@ public:
 
     Kho();
     ~Kho();
+
+    // Tinh thanh tien
+    void thanhtien();
     
     friend void docfile(Kho& k, const std::string& filename);
+    friend void luufile(Kho& k, const std::string& filename);
     void show() const;
     // Them
     void add();

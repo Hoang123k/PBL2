@@ -41,7 +41,7 @@ int main()
         clear_display();
         menu();
 
-        if (!readInt("Nhap lua chon cua ban: ", choice))
+        if (!readInt("Nhập lựa chọn của bạn: ", choice))
         {
             stop_display();
             continue;
@@ -49,7 +49,7 @@ int main()
 
         if (choice == 0)
         {
-            cout << "Cam on ban da su dung phan mem. Tam biet!\n";
+            cout << "Cảm ơn vì đã dùng phần mềm. Tạm biệt!\n";
             break;
         }
 
@@ -63,7 +63,7 @@ int main()
                 clear_display();
                 menu_HH();
 
-                if (!readInt("Nhap lua chon hang hoa: ", choice1))
+                if (!readInt("Nhập lựa chọn hàng hóa: ", choice1))
                 {
                     stop_display();
                     continue;

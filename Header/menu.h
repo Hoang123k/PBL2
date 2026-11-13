@@ -14,6 +14,7 @@ inline void menu() {
     cout << " 2. Nhà cung cấp" << endl;
     cout << " 3. Chi tiết phiếu nhập" << endl;
     cout << " 4. Danh sách phiếu nhập" << endl;
+    cout << " 5. Lưu vào file" << endl;
     // cout << " 5. Tải lại dữ liệu (Reload từ File)" << endl;
     cout << " 0. Thoát chương trình                        " << endl;
     cout << "==============================================" << endl;
@@ -21,7 +22,7 @@ inline void menu() {
 
 inline void menu_HH(){
     cout << "\n==============================================" << endl;
-    cout << "           Quản lý hàng hóa trong kho         " << endl;
+    cout << "           QUẢN LÝ HÀNG HÓA TRONG KHO         " << endl;
     cout << "==============================================" << endl;
     cout << " 1. Xuất danh sách hàng hóa" << endl;
     cout << " 2. Thêm vào kho" << endl;
@@ -29,37 +30,39 @@ inline void menu_HH(){
     cout << " 4. Sắp xếp" << endl;
     cout << " 5. Tìm kiếm" << endl;
     cout << " 6. Xóa" << endl;
+    cout << " 7. Tính thành tiền" << endl;
+    cout << " 8. Lưu vào file" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
 inline void menu_HH_Sort() {
     cout << "\n==============================================" << endl;
-    cout << "           Sắp xếp hàng hóa trong kho         " << endl;
+    cout << "           SẮP XẾP HÀNG HÓA TRONG KHO         " << endl;
     cout << "==============================================" << endl;
-    cout << " 1. Sắp xếp theo mã hàng" << endl;
-    cout << " 2. Sắp xếp theo tên hàng" << endl;
-    cout << " 3. Sắp xếp theo loại hàng" << endl;
-    cout << " 4. Sắp xếp theo đơn vị tính" << endl;
-    cout << " 5. Sắp xếp theo số lượng" << endl;
-    cout << " 6. Sắp xếp theo đơn giá" << endl;
+    cout << " 1. Theo mã hàng" << endl;
+    cout << " 2. Theo tên hàng" << endl;
+    cout << " 3. Theo loại hàng" << endl;
+    cout << " 4. Theo đơn vị tính" << endl;
+    cout << " 5. Theo số lượng" << endl;
+    cout << " 6. Theo đơn giá" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
 inline void menu_HH_Search() {
     cout << "\n==============================================" << endl;
-    cout << "           Tìm kiếm hàng hóa trong kho        " << endl;
+    cout << "           TÌM KIẾM HÀNG HÓA TRONG KHO        " << endl;
     cout << "==============================================" << endl;
-    cout << " 1. Tìm kiếm theo mã hàng" << endl;
-    cout << " 2. Tìm kiếm theo tên hàng" << endl;
-    cout << " 3. Tìm kiếm theo loại hàng" << endl;
-    cout << " 4. Tìm kiếm theo đơn vị tính" << endl;
+    cout << " 1. Theo mã hàng" << endl;
+    cout << " 2. Theo tên hàng" << endl;
+    cout << " 3. Theo loại hàng" << endl;
+    cout << " 4. Theo đơn vị tính" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
 
 inline void menu_NCC(){
     cout << "\n==============================================" << endl;
-    cout << "           Quản lý nhà cung cấp           " << endl;
+    cout << "           QUẢN LÝ NHÀ CUNG CẤP           " << endl;
     cout << "==============================================" << endl;
     cout << " 1. Xuất danh sách nhà cung cấp" << endl;
     cout << " 2. Thêm nhà cung cấp" << endl;
