@@ -9,7 +9,7 @@
 #include "./Header/qlncc.h"
 #include "./Header/menu.h"
 #include "./Header/HH.h"
-
+#include "./Header/NCC_func.h"
 using namespace std;
 
 int main()
@@ -81,12 +81,29 @@ int main()
         }
 
         case 2:
-            clear_display();
-            menu_NCC();
-            cout << "\nCac chuc nang nha cung cap chua duoc ket noi.\n";
-            stop_display();
-            break;
+        {
+            int choice2 = -1;
+            while (choice2 != 0)
+            {
+                clear_display();
+                menu_NCC();
 
+                if (!readInt("Nhap lua chon nha cung cap: ", choice2))
+                {
+                    stop_display();
+                    continue;
+                }
+
+                if (choice2 == 0)
+                {
+                    break;
+                }
+
+                NCC_function(n1, choice2);
+                stop_display();
+            }
+            break;
+        }
         case 3:
             clear_display();
             menu_PN();

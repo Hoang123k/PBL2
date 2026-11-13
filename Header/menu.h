@@ -6,7 +6,8 @@
 
 using namespace std;
 
-inline void menu() {
+inline void menu()
+{
     cout << "\n==============================================" << endl;
     cout << "          HỆ THỐNG QUẢN LÝ KHO HÀNG           " << endl;
     cout << "==============================================" << endl;
@@ -19,7 +20,8 @@ inline void menu() {
     cout << "==============================================" << endl;
 }
 
-inline void menu_HH(){
+inline void menu_HH()
+{
     cout << "\n==============================================" << endl;
     cout << "           Quản lý hàng hóa trong kho         " << endl;
     cout << "==============================================" << endl;
@@ -32,7 +34,8 @@ inline void menu_HH(){
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
-inline void menu_HH_Sort() {
+inline void menu_HH_Sort()
+{
     cout << "\n==============================================" << endl;
     cout << "           Sắp xếp hàng hóa trong kho         " << endl;
     cout << "==============================================" << endl;
@@ -45,7 +48,8 @@ inline void menu_HH_Sort() {
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
-inline void menu_HH_Search() {
+inline void menu_HH_Search()
+{
     cout << "\n==============================================" << endl;
     cout << "           Tìm kiếm hàng hóa trong kho        " << endl;
     cout << "==============================================" << endl;
@@ -57,7 +61,8 @@ inline void menu_HH_Search() {
     cout << "==============================================" << endl;
 }
 
-inline void menu_NCC(){
+inline void menu_NCC()
+{
     cout << "\n==============================================" << endl;
     cout << "           Quản lý nhà cung cấp           " << endl;
     cout << "==============================================" << endl;
@@ -71,7 +76,8 @@ inline void menu_NCC(){
     cout << "==============================================" << endl;
 }
 
-inline void menu_PN(){
+inline void menu_PN()
+{
     cout << "\n==============================================" << endl;
     cout << "      QUẢN LÝ HÀNG HÓA TRONG PHIẾU NHẬP       " << endl;
     cout << "==============================================" << endl;
@@ -85,7 +91,8 @@ inline void menu_PN(){
     cout << "==============================================" << endl;
 }
 
-inline void menu_DSPN(){
+inline void menu_DSPN()
+{
     cout << "\n==============================================" << endl;
     cout << "          QUẢN LÝ DANH SÁCH PHIẾU NHẬP          " << endl;
     cout << "==============================================" << endl;
@@ -98,26 +105,51 @@ inline void menu_DSPN(){
     cout << " 0. Quay về menu chính" << endl;
     cout << "==============================================" << endl;
 }
+inline void menu_NCC_Sort()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           Sắp xếp nhà cung cấp               " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Sắp xếp theo mã NCC" << endl;
+    cout << " 2. Sắp xếp theo tên NCC" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;
+}
 
-inline void clear_display(){
+inline void menu_NCC_Search()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           Tìm kiếm nhà cung cấp              " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Tìm kiếm theo mã NCC" << endl;
+    cout << " 2. Tìm kiếm theo tên NCC" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;
+}
+inline void clear_display()
+{
     system("cls");
 }
 
-inline void stop_display() {
+inline void stop_display()
+{
     system("pause");
 }
-inline bool readInt(const std::string& prompt, int& value) {
+inline bool readInt(const std::string &prompt, int &value)
+{
     std::cout << prompt;
 
     std::string line;
-    if (!std::getline(std::cin, line)) {
+    if (!std::getline(std::cin, line))
+    {
         return false;
     }
 
     std::stringstream input(line);
     char extra;
 
-    if (!(input >> value) || (input >> extra)) {
+    if (!(input >> value) || (input >> extra))
+    {
         std::cout << "Lua chon khong hop le. Vui long nhap so.\n";
         return false;
     }
