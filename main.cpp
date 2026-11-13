@@ -9,7 +9,7 @@
 #include "./Header/qlncc.h"
 #include "./Header/menu.h"
 #include "./Header/HH.h"
-
+#include "./Header/NCC_func.h"
 using namespace std;
 
 int main()
@@ -71,6 +71,16 @@ int main()
 
                 if (choice1 == 0)
                 {
+                    if(kho1.save_kho == 0){
+                        cout << "[!] File chưa được lưu." << endl 
+                            << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                        string yes;
+                        getline(cin,yes);
+                        if(yes == "Y" || yes == "y"){
+                            luufile(kho1,"Data\\kho.txt");
+                            kho1.save_kho = 1;
+                        }
+                    }
                     break;
                 }
 
@@ -81,12 +91,29 @@ int main()
         }
 
         case 2:
-            clear_display();
-            menu_NCC();
-            cout << "\nCac chuc nang nha cung cap chua duoc ket noi.\n";
-            stop_display();
-            break;
+        {
+            int choice2 = -1;
+            while (choice2 != 0)
+            {
+                clear_display();
+                menu_NCC();
 
+                if (!readInt("Nhap lua chon nha cung cap: ", choice2))
+                {
+                    stop_display();
+                    continue;
+                }
+
+                if (choice2 == 0)
+                {
+                    break;
+                }
+
+                NCC_function(n1, choice2);
+                stop_display();
+            }
+            break;
+        }
         case 3:
             clear_display();
             menu_PN();

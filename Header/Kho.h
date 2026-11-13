@@ -8,7 +8,7 @@ class Kho {
 public:
     int soluonghang;
     std::vector<std::unique_ptr<Hanghoa>> kho;
-
+    bool save_kho = 1;
     Kho();
     ~Kho();
 

@@ -18,7 +18,7 @@ SOURCES = \
     CPP/Phieunhap.cpp \
     CPP/Dsphieunhap.cpp \
     CPP/Kho.cpp \
-    CPP/Date.cpp
+    CPP/Date.cpp \
 
 all: $(TARGET)
 

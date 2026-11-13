@@ -111,6 +111,7 @@ inline void HH_function(Kho& kho1, int choice1) {
         }
         case 0:
             return;
+            
         default:
             std::cout << "[Lỗi] Lựa chọn không hợp lệ.\n";
             return;
@@ -131,6 +132,7 @@ inline void HH_function(Kho& kho1, int choice1) {
     case 8:
         clear_display();
         luufile(kho1,"Data\\kho.txt");
+        kho1.save_kho = 1;
         break;
     case 0:
         return;

@@ -8,10 +8,8 @@
 #include "../Header/menu.h"
 #include "../Header/sorting.h"
 #include "../Header/transfer.h"
-#include "../Header/save.h"
 
 using namespace std;
-
 Kho::Kho() : soluonghang(0) {}
 Kho::~Kho() {}
 
@@ -93,7 +91,7 @@ void luufile(Kho& k, const string& filename){
              << k.kho[i]->getdongia() << "|"
              << k.kho[i]->getthuoctinh() << endl;
     }
-    save_kho = 1;
+    k.save_kho = 1;
     file.close();
     cout << "[OK] Lưu file thành công!" << endl;
 }
@@ -188,7 +186,7 @@ void Kho::add()
         {
             this->kho.push_back(make_unique<ThucPham>(mahang, tenhang, "TP", donvitinh, soluong, dongia, thuoctinh));
             cout << "[OK] Thêm thực phẩm thành công!\n";
-            save_kho = 0;
+            this->save_kho = 0;
             break;
         }
         else if (phanloai == "VT" || phanloai == "vt")
@@ -212,7 +210,7 @@ void Kho::sortByMaHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
                       {
                           return a->getmahang() < b->getmahang();
                       });
-    save_kho = 0;
+    this->save_kho = 0;
 }
 void Kho::sortByTenHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
@@ -222,7 +220,7 @@ void Kho::sortByTenHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
                       {
                           return a->gettenhang() < b->gettenhang();
                       });
-    save_kho = 0;
+    this->save_kho = 0;
 }
 void Kho::sortByLoaiHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
@@ -232,7 +230,7 @@ void Kho::sortByLoaiHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
                       {
                           return a->getloaihang() < b->getloaihang();
                       });
-    save_kho = 0;
+    this->save_kho = 0;
 }
 void Kho::sortByDonViTinh(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
@@ -242,7 +240,7 @@ void Kho::sortByDonViTinh(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
                       {
                           return a->getdonvitinh() < b->getdonvitinh();
                       });
-    save_kho = 0;
+    this->save_kho = 0;
 }
 void Kho::sortBySoLuong(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
@@ -252,7 +250,7 @@ void Kho::sortBySoLuong(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
                       {
                           return a->getsoluong() < b->getsoluong();
                       });
-    save_kho = 0;
+    this->save_kho = 0;
 }
 void Kho::sortByDonGia(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
@@ -262,7 +260,7 @@ void Kho::sortByDonGia(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
                       {
                           return a->getdongia() < b->getdongia();
                       });
-    save_kho = 0;
+    this->save_kho = 0;
 }
 
 // Search
@@ -369,7 +367,7 @@ void Kho::deleteByMaHang(const string& mahang) {
             kho.erase(kho.begin() + index);
             soluonghang = kho.size();
             cout << "[OK] Đã xóa hàng hóa với mã: " << mahang << endl;
-            save_kho = 0;
+            this->save_kho = 0;
         }
     }
     catch (const runtime_error& e) {
@@ -446,15 +444,15 @@ void Kho::update() {
     }
 
     cout << "[OK] Cập nhật hàng hóa thành công!" << endl;
-    save_kho = 0;
+    this->save_kho = 0;
 
 }
 
 
 void Kho::thanhtien(){
-    for(size_t i=0;i<soluonghang;i++){
-        cout << setw(10) << kho[i]->getmahang() 
-             << setw(22) << kho[i]->gettenhang()
-             << setw(30) << kho[i]->getsoluong() * kho[i]->getdongia() << endl;
+    for(size_t i=0;i<this->kho.size();i++){
+        cout << setw(10) << this->kho[i]->getmahang() 
+             << setw(22) << this->kho[i]->gettenhang()
+             << setw(30) << this->kho[i]->getsoluong() * this->kho[i]->getdongia() << endl;
     } 
 }
