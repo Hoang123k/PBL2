@@ -71,13 +71,15 @@ int main()
 
                 if (choice1 == 0)
                 {
-                    if(kho1.save_kho == 0){
-                        cout << "[!] File chưa được lưu." << endl 
-                            << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                    if (kho1.save_kho == 0)
+                    {
+                        cout << "[!] File chưa được lưu." << endl
+                             << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
                         string yes;
-                        getline(cin,yes);
-                        if(yes == "Y" || yes == "y"){
-                            luufile(kho1,"Data\\kho.txt");
+                        getline(cin, yes);
+                        if (yes == "Y" || yes == "y")
+                        {
+                            luufile(kho1, "Data\\kho.txt");
                             kho1.save_kho = 1;
                         }
                     }
@@ -103,13 +105,11 @@ int main()
                     stop_display();
                     continue;
                 }
-
+                NCC_function(n1, choice2);
                 if (choice2 == 0)
                 {
                     break;
                 }
-
-                NCC_function(n1, choice2);
                 stop_display();
             }
             break;

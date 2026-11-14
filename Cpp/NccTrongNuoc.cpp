@@ -23,3 +23,7 @@ void NccTrongNuoc::show() const
          << setw(25) << this->diachincc
          << setw(15) << this->masothue << endl;
 }
+string NccTrongNuoc::getmasothue() const
+{
+    return masothue;
+}

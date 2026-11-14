@@ -14,6 +14,7 @@ public:
     ~qlncc();
 
     friend void docfile(qlncc &ql, const std::string &filename);
+    friend void luufile(qlncc &ql, const std::string &filename);
     void show() const;
 
     // Them

@@ -23,3 +23,12 @@ void NccQuocTe::show() const
          << setw(25) << this->diachincc
          << setw(15) << this->quocgia << endl;
 }
+string NccQuocTe::getmasothue() const
+{
+    return masothue;
+}
+
+string NccQuocTe::getquocgia() const
+{
+    return quocgia;
+}
