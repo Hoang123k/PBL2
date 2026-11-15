@@ -105,13 +105,11 @@ int main()
                     stop_display();
                     continue;
                 }
-
+                NCC_function(n1, choice2);
                 if (choice2 == 0)
                 {
                     break;
                 }
-
-                NCC_function(n1, choice2);
                 stop_display();
             }
             break;

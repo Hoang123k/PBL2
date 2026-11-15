@@ -90,8 +90,17 @@ inline void NCC_function(qlncc &ql, int choice)
     }
 
     case 0:
+    {
+        char luu;
+        std::cout << "Ban co muon luu nhung thay doi vao file truoc khi thoat? (Y/N): ";
+        std::cin >> luu;
+        std::cin.ignore();
+        if (toupper(luu) == 'Y')
+        {
+            luufile(ql, "Data\\ncc.txt");
+        }
         return;
-
+    }
     default:
         std::cout << "Lua chon khong hop le.\n";
         break;

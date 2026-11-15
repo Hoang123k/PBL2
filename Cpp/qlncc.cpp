@@ -98,6 +98,14 @@ void qlncc::add()
 
     cout << "Nhap ma NCC: ";
     getline(cin, ma);
+    for (const auto &ncc : ql_ncc)
+    {
+        if (ncc->getmancc() == ma)
+        {
+            cout << "Loi: Ma NCC '" << ma << "' da ton tai! Vui long them lai voi ma khac.\n";
+            return;
+        }
+    }
     cout << "Nhap ten NCC: ";
     getline(cin, ten);
     cout << "Nhap SDT: ";
@@ -280,4 +288,34 @@ void qlncc::deleteByMaNCC(const string &ma)
         }
     }
     cout << "Khong tim thay nha cung cap co ma: " << ma << endl;
+}
+void luufile(qlncc &ql, const string &filename)
+{
+    ofstream file(filename);
+    if (!file.is_open())
+    {
+        cout << "Khong the mo file de ghi: " << filename << endl;
+        return;
+    }
+    for (const auto &ncc : ql.ql_ncc)
+    {
+        NccTrongNuoc *tn = dynamic_cast<NccTrongNuoc *>(ncc.get());
+        if (tn != nullptr)
+        {
+            file << "TN|" << tn->getmancc() << "|" << tn->gettenncc() << "|"
+                 << tn->getsdtncc() << "|" << tn->getdiachincc() << "|"
+                 << tn->getmasothue() << "\n";
+        }
+        else
+        {
+            NccQuocTe *qt = dynamic_cast<NccQuocTe *>(ncc.get());
+            if (qt != nullptr)
+            {
+                file << "QT|" << qt->getmancc() << "|" << qt->gettenncc() << "|"
+                     << qt->getsdtncc() << "|" << qt->getdiachincc() << "|"
+                     << qt->getmasothue() << "|" << qt->getquocgia() << "\n";
+            }
+        }
+    }
+    cout << "Luu file thanh cong!\n";
 }
