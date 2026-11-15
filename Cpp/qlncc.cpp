@@ -1,11 +1,12 @@
-#include "qlncc.h"
-#include "NccTrongNuoc.h"
-#include "NccQuocTe.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include "qlncc.h"
+#include "NccTrongNuoc.h"
+#include "NccQuocTe.h"
+#include "../Header/transfer.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ void docfile(qlncc &ql, const string &filename)
         getline(ss, dc, '|');
         getline(ss, mathue, '|');
         getline(ss, extra, '|');
-
+        ma = toUpperString(ma);
         if (loai == "TN")
         {
             ql.ql_ncc.push_back(make_unique<NccTrongNuoc>(ma, ten, sdt, dc, mathue));

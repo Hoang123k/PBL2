@@ -49,5 +49,5 @@ void Chitietphieunhap::show() const {
          << setw(10) << this->mancc
          << setw(15) << this->soluongnhap
          << setw(15) << this->dongianhap 
-         << setw(15) << this->thanhtien() << endl; // Tiện thể in luôn thành tiền cho đẹp bảng
+         << setw(15) << this->thanhtien() << endl;
 }

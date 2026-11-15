@@ -8,5 +8,5 @@ private:
 public:
     NccQuocTe();
     NccQuocTe(const std::string& ma, const std::string& ten, const std::string& sdt, const std::string& dc, const std::string& mst, const std::string& qg);
-    void show() const override; // Thêm const ở đây
+    void show() const override; 
 };

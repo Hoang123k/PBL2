@@ -31,5 +31,5 @@ public:
     void setdiachincc(const std::string& dc);
     void setmasothue(const std::string& mst);
 
-    virtual void show() const = 0; // Bắt buộc phải có const
+    virtual void show() const = 0; 
 };

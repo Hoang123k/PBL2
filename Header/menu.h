@@ -79,35 +79,6 @@ inline void menu_NCC()
     cout << "==============================================" << endl;
 }
 
-inline void menu_PN()
-{
-    cout << "\n==============================================" << endl;
-    cout << "      QUẢN LÝ HÀNG HÓA TRONG PHIẾU NHẬP       " << endl;
-    cout << "==============================================" << endl;
-    cout << " 1. Xuất hàng hóa của phiếu" << endl;
-    cout << " 2. Thêm hàng hóa" << endl;
-    cout << " 3. Cập nhật thông tin" << endl;
-    cout << " 4. Sắp xếp" << endl;
-    cout << " 5. Tìm kiếm" << endl;
-    cout << " 6. Xóa" << endl;
-    cout << " 0. Quay về menu chính" << endl;
-    cout << "==============================================" << endl;
-}
-
-inline void menu_DSPN()
-{
-    cout << "\n==============================================" << endl;
-    cout << "          QUẢN LÝ DANH SÁCH PHIẾU NHẬP          " << endl;
-    cout << "==============================================" << endl;
-    cout << " 1. Xuất danh sách phiếu nhập" << endl;
-    cout << " 2. Thêm phiếu nhập" << endl;
-    cout << " 3. Cập nhật thông tin" << endl;
-    cout << " 4. Sắp xếp" << endl;
-    cout << " 5. Tìm kiếm" << endl;
-    cout << " 6. Xóa" << endl;
-    cout << " 0. Quay về menu chính" << endl;
-    cout << "==============================================" << endl;
-}
 inline void menu_NCC_Sort()
 {
     cout << "\n==============================================" << endl;
@@ -129,6 +100,78 @@ inline void menu_NCC_Search()
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
+inline void menu_PN()
+{
+    cout << "\n==============================================" << endl;
+    cout << "      QUẢN LÝ HÀNG HÓA TRONG PHIẾU NHẬP       " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Xuất hàng hóa của phiếu" << endl;
+    cout << " 2. Thêm hàng hóa" << endl;
+    cout << " 3. Cập nhật thông tin" << endl;
+    cout << " 4. Sắp xếp" << endl;
+    cout << " 5. Tìm kiếm" << endl;
+    cout << " 6. Xóa" << endl;
+    cout << " 7. Lưu vào file(pheunhap.txt)"<< endl;
+    cout << " 0. Quay về menu chính" << endl;
+    cout << "==============================================" << endl;
+}
+
+inline void menu_add_PN()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           THÊM HÀNG HÓA VÀO PHIẾU NHẬP       " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Một hàng hóa" << endl;
+    cout << " 2. Nhiều hàng hóa" << endl;
+    cout << " 0. Quay về menu phiếu nhập" << endl;
+    cout << "==============================================" << endl;
+}
+inline void menu_PN_Sort()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           SẮP XẾP HÀNG HÓA TRONG KHO         " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Theo mã hàng" << endl;
+    cout << " 2. Theo tên hàng" << endl;
+    cout << " 3. Theo loại hàng" << endl;
+    cout << " 4. Theo đơn vị tính" << endl;
+    cout << " 5. Theo số lượng" << endl;
+    cout << " 6. Theo đơn giá" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;
+}
+
+inline void menu_DSPN()
+{
+    cout << "\n==============================================" << endl;
+    cout << "          QUẢN LÝ DANH SÁCH PHIẾU NHẬP          " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Xuất danh sách phiếu nhập" << endl;
+    cout << " 2. Thêm phiếu nhập" << endl;
+    cout << " 3. Cập nhật thông tin" << endl;
+    cout << " 4. Sắp xếp" << endl;
+    cout << " 5. Tìm kiếm" << endl;
+    cout << " 6. Xóa" << endl;
+    cout << " 7. Lưu vào file(dspn.txt)" << endl;
+    cout << " 0. Quay về menu chính" << endl;
+    cout << "==============================================" << endl;
+}
+inline void menu_DSPN_Sort()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           SẮP XẾP HÀNG HÓA TRONG KHO         " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Theo mã hàng" << endl;
+    cout << " 2. Theo tên hàng" << endl;
+    cout << " 3. Theo loại hàng" << endl;
+    cout << " 4. Theo đơn vị tính" << endl;
+    cout << " 5. Theo số lượng" << endl;
+    cout << " 6. Theo đơn giá" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;
+}
+
+
 inline void clear_display()
 {
     system("cls");

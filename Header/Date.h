@@ -22,7 +22,7 @@ class Date{
         void  setd(int&);
         void  setm(int&);
         void  sety(int&);
-        
+        void checkdate(int&, int&, int&);
         friend string Date_to_string(Date&);
         friend std::ostream& operator<<(std::ostream&, const Date&);
         friend std::istream& operator>>(std::istream&, Date&);

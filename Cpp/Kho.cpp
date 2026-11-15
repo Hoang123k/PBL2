@@ -6,7 +6,6 @@
 #include <sstream>
 #include <iomanip>
 #include "../Header/menu.h"
-#include "../Header/sorting.h"
 #include "../Header/transfer.h"
 
 using namespace std;
@@ -65,28 +64,30 @@ void docfile(Kho &k, const string &filename)
 
         if (loaihang == "TP" || loaihang == "tp")
         {
-            k.kho.push_back(make_unique<ThucPham>(mahang, tenhang, loaihang, donvitinh, soluong, dongia, thuoctinh));
+            k.kho.push_back(make_unique<ThucPham>(toUpperString(mahang), tenhang, loaihang, donvitinh, soluong, dongia, thuoctinh));
         }
         else if (loaihang == "VT" || loaihang == "vt")
         {
-            k.kho.push_back(make_unique<VatTu>(mahang, tenhang, loaihang, donvitinh, soluong, dongia, thuoctinh));
+            k.kho.push_back(make_unique<VatTu>(toUpperString(mahang), tenhang, loaihang, donvitinh, soluong, dongia, thuoctinh));
         }
     }
     k.soluonghang = k.kho.size();
     cout << "Đọc file hàng hóa thành công!" << endl;
 }
-void luufile(Kho& k, const string& filename){
+void luufile(Kho &k, const string &filename)
+{
     ofstream file(filename);
     if (!file.is_open())
     {
         cout << "[Lỗi]Không thể mở file: " << filename << endl;
         return;
     }
-    for(size_t i=0;i<k.kho.size();i++){
-        file << k.kho[i]->getmahang() << "|" 
-             << k.kho[i]->gettenhang() << "|" 
+    for (size_t i = 0; i < k.kho.size(); i++)
+    {
+        file << toUpperString(k.kho[i]->getmahang()) << "|"
+             << k.kho[i]->gettenhang() << "|"
              << k.kho[i]->getloaihang() << "|"
-             << k.kho[i]->getdonvitinh() << "|" 
+             << k.kho[i]->getdonvitinh() << "|"
              << k.kho[i]->getsoluong() << "|"
              << k.kho[i]->getdongia() << "|"
              << k.kho[i]->getthuoctinh() << endl;
@@ -96,17 +97,23 @@ void luufile(Kho& k, const string& filename){
     cout << "[OK] Lưu file thành công!" << endl;
 }
 
-bool Kho::check_ma(const string ma){
-    for(size_t i=0;i<kho.size();i++){
-        if(ma == kho[i]->getmahang()){
+bool Kho::check_ma(const string ma)
+{
+    for (size_t i = 0; i < kho.size(); i++)
+    {
+        if (ma == kho[i]->getmahang())
+        {
             return false;
         }
     }
     return true;
 }
-bool Kho::check_ten(const string ten){
-    for(size_t i=0;i<kho.size();i++){
-        if(ten == kho[i]->gettenhang()){
+bool Kho::check_ten(const string ten)
+{
+    for (size_t i = 0; i < kho.size(); i++)
+    {
+        if (ten == kho[i]->gettenhang())
+        {
             return false;
         }
     }
@@ -127,55 +134,68 @@ void Kho::add()
             cout << "Phân loại hàng không hợp lệ! Xin nhập VT/vt hoặc TP/tp.\n";
             continue;
         }
-        while(true){
+        while (true)
+        {
             cout << "Nhập mã hàng: ";
             getline(cin, mahang);
-            if(check_ma(mahang) == true) break;
-            else{
+            if (check_ma(mahang) == true)
+                break;
+            else
+            {
                 cout << "Mã hàng đã tồn tại! Xin nhập lại mã hàng!" << endl;
             }
-
         }
 
-        while(true){
+        while (true)
+        {
             cout << "Nhập tên hàng: ";
             getline(cin, tenhang);
-            if(check_ten(tenhang) == true) break;
-            else{
+            if (check_ten(tenhang) == true)
+                break;
+            else
+            {
                 cout << "Tên hàng đã tồn tại. Xin nhập lại tên hàng!" << endl;
             }
         }
         cout << "Nhập đơn vị tính: ";
         getline(cin, donvitinh);
-        while (true) {
+        while (true)
+        {
             cout << "Nhập số lượng: ";
             getline(cin, sl);
 
-            try {
+            try
+            {
                 soluong = stringToLL(sl);
-                if (soluong <= 0) {
+                if (soluong <= 0)
+                {
                     cout << "Lỗi: Số lượng phải lớn hơn 0. Xin hãy nhập lại.\n";
                     continue;
                 }
                 break;
-            } 
-            catch (const exception& e) {
+            }
+            catch (const exception &e)
+            {
                 cout << "Lỗi định dạng! Vui lòng chỉ nhập số nguyên hợp lệ.\n";
             }
         }
-        while (true) {
+        while (true)
+        {
             cout << "Nhập đơn giá: ";
             getline(cin, gia);
 
-            try {
+            try
+            {
                 dongia = stringToLL(gia);
-                if (dongia <= 0) {
+                if (dongia <= 0)
+                {
                     cout << "Lỗi: Đơn giá phải lớn hơn 0. Xin hãy nhập lại.\n";
                     continue;
                 }
                 break;
-            } 
-            catch (const exception& e) {
+            }
+            catch (const exception &e)
+            {
                 cout << "Lỗi định dạng! Vui lòng chỉ nhập số nguyên hợp lệ.\n";
             }
         }
@@ -204,65 +224,130 @@ void Kho::add()
 
 void Kho::sortByMaHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
-    quickSortTemplate(kho, low, high,
-                      [](const unique_ptr<Hanghoa> &a,
-                         const unique_ptr<Hanghoa> &b)
-                      {
-                          return a->getmahang() < b->getmahang();
-                      });
+    if (low < high)
+    {
+        string pivot = kho[high]->getmahang();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (kho[j]->getmahang() < pivot)
+            {
+                i++;
+                swap(kho[i], kho[j]);
+            }
+        }
+        swap(kho[i + 1], kho[high]);
+        int pi = i + 1;
+        sortByMaHang(kho, low, pi - 1);
+        sortByMaHang(kho, pi + 1, high);
+    }
     this->save_kho = 0;
 }
 void Kho::sortByTenHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
-    quickSortTemplate(kho, low, high,
-                      [](const unique_ptr<Hanghoa> &a,
-                         const unique_ptr<Hanghoa> &b)
-                      {
-                          return a->gettenhang() < b->gettenhang();
-                      });
+    if (low < high)
+    {
+        string pivot = kho[high]->gettenhang();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (kho[j]->gettenhang() < pivot)
+            {
+                i++;
+                swap(kho[i], kho[j]);
+            }
+        }
+        swap(kho[i + 1], kho[high]);
+        int pi = i + 1;
+        sortByTenHang(kho, low, pi - 1);
+        sortByTenHang(kho, pi + 1, high);
+    }
     this->save_kho = 0;
 }
 void Kho::sortByLoaiHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
-    quickSortTemplate(kho, low, high,
-                      [](const unique_ptr<Hanghoa> &a,
-                         const unique_ptr<Hanghoa> &b)
-                      {
-                          return a->getloaihang() < b->getloaihang();
-                      });
+    if (low < high)
+    {
+        string pivot = kho[high]->getloaihang();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (kho[j]->getloaihang() < pivot)
+            {
+                i++;
+                swap(kho[i], kho[j]);
+            }
+        }
+        swap(kho[i + 1], kho[high]);
+        int pi = i + 1;
+        sortByLoaiHang(kho, low, pi - 1);
+        sortByLoaiHang(kho, pi + 1, high);
+    }
     this->save_kho = 0;
 }
 void Kho::sortByDonViTinh(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
-    quickSortTemplate(kho, low, high,
-                      [](const unique_ptr<Hanghoa> &a,
-                         const unique_ptr<Hanghoa> &b)
-                      {
-                          return a->getdonvitinh() < b->getdonvitinh();
-                      });
+    if (low < high)
+    {
+        string pivot = kho[high]->getdonvitinh();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (kho[j]->getdonvitinh() < pivot)
+            {
+                i++;
+                swap(kho[i], kho[j]);
+            }
+        }
+        swap(kho[i + 1], kho[high]);
+        int pi = i + 1;
+        sortByDonViTinh(kho, low, pi - 1);
+        sortByDonViTinh(kho, pi + 1, high);
+    }
     this->save_kho = 0;
 }
 void Kho::sortBySoLuong(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
-    quickSortTemplate(kho, low, high,
-                      [](const unique_ptr<Hanghoa> &a,
-                         const unique_ptr<Hanghoa> &b)
-                      {
-                          return a->getsoluong() < b->getsoluong();
-                      });
+    if (low < high)
+    {
+        long long pivot = kho[high]->getsoluong();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (kho[j]->getsoluong() < pivot)
+            {
+                i++;
+                swap(kho[i], kho[j]);
+            }
+        }
+        swap(kho[i + 1], kho[high]);
+        int pi = i + 1;
+        sortBySoLuong(kho, low, pi - 1);
+        sortBySoLuong(kho, pi + 1, high);
+    }
     this->save_kho = 0;
 }
 void Kho::sortByDonGia(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
 {
-    quickSortTemplate(kho, low, high,
-                      [](const unique_ptr<Hanghoa> &a,
-                         const unique_ptr<Hanghoa> &b)
-                      {
-                          return a->getdongia() < b->getdongia();
-                      });
+    if (low < high)
+    {
+        long long pivot = kho[high]->getdongia();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (kho[j]->getdongia() < pivot)
+            {
+                i++;
+                swap(kho[i], kho[j]);
+            }
+        }
+        swap(kho[i + 1], kho[high]);
+        int pi = i + 1;
+        sortByDonGia(kho, low, pi - 1);
+        sortByDonGia(kho, pi + 1, high);
+    }
     this->save_kho = 0;
 }
-
 // Search
 int Kho::searchByMaHang(const string &ma) const
 {
@@ -288,95 +373,124 @@ int Kho::searchByMaHang(const string &ma) const
     }
     return -1;
 }
-void Kho::searchByTenHang(const string& ten) const {
-    if (kho.empty()) {
+void Kho::searchByTenHang(const string &ten) const
+{
+    if (kho.empty())
+    {
         cout << "[Lỗi] Kho hàng hóa rỗng." << endl;
-        return ;
+        return;
     }
-     bool found = false;
-    try {
-        for (const auto& hang : kho) {
-            if (hang->gettenhang().find(ten) != string::npos) {
-                hang->show();
+    bool found = false;
+    try
+    {
+        for (int i = 0; i < this->soluonghang; i++)
+        {
+            if (this->kho[i]->gettenhang().find(ten) != string::npos)
+            {
+                this->kho[i]->show();
                 found = true;
             }
         }
-        if (!found) {
+        if (!found)
+        {
             throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với tên: " + ten);
         }
     }
-    catch (const runtime_error& e) {
+    catch (const runtime_error &e)
+    {
         cout << e.what() << endl;
     }
 }
 
-void Kho::searchByLoaiHang(const string& loai) const {
-    if (kho.empty()) {
+void Kho::searchByLoaiHang(const string &loai) const
+{
+    if (kho.empty())
+    {
         cout << "[Lỗi] Kho hàng hóa rỗng." << endl;
         return;
     }
     bool found = false;
-    try {
-        for (const auto& hang : kho) {
-            if (hang->getloaihang().find(loai) != string::npos) {
-                hang->show();
+    try
+    {
+        for (int i = 0; i < this->soluonghang; i++)
+        {
+            if (this->kho[i]->getloaihang().find(loai) != string::npos)
+            {
+                this->kho[i]->show();
                 found = true;
             }
         }
-        if (!found) {
+        if (!found)
+        {
             throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với loại: " + loai);
         }
     }
-    catch (const runtime_error& e) {
+    catch (const runtime_error &e)
+    {
         cout << e.what() << endl;
     }
 }
 
-void Kho::searchByDonViTinh(const string& donvitinh) const {
-    if (kho.empty()) {
+void Kho::searchByDonViTinh(const string &donvitinh) const
+{
+    if (kho.empty())
+    {
         cout << "[Lỗi] Kho hàng hóa rỗng." << endl;
         return;
     }
     bool found = false;
-    try {
-        for (const auto& hang : kho) {
-            if (hang->getdonvitinh().find(donvitinh) != string::npos) {
-                hang->show();
+    try
+    {
+        for (int i = 0; i < this->soluonghang; i++)
+        {
+            if (this->kho[i]->getdonvitinh().find(donvitinh) != string::npos)
+            {
+                this->kho[i]->show();
                 found = true;
             }
         }
-        if (!found) {
+        if (!found)
+        {
             throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với đơn vị tính: " + donvitinh);
         }
     }
-    catch (const runtime_error& e) {
+    catch (const runtime_error &e)
+    {
         cout << e.what() << endl;
     }
 }
 // Delete
-void Kho::deleteByMaHang(const string& mahang) {
-    try{
-        if (kho.empty()) {
+void Kho::deleteByMaHang(const string &mahang)
+{
+    try
+    {
+        if (kho.empty())
+        {
             throw runtime_error("[Lỗi] Kho hàng hóa rỗng.");
         }
         int index = searchByMaHang(mahang);
-        if(index == -1){
+        if (index == -1)
+        {
             throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với mã: " + mahang);
         }
-        if(index != -1){
+        if (index != -1)
+        {
             kho.erase(kho.begin() + index);
             soluonghang = kho.size();
             cout << "[OK] Đã xóa hàng hóa với mã: " << mahang << endl;
             this->save_kho = 0;
         }
     }
-    catch (const runtime_error& e) {
+    catch (const runtime_error &e)
+    {
         cout << e.what() << endl;
     }
 }
 
-void Kho::update() {
-    if (kho.empty()) {
+void Kho::update()
+{
+    if (kho.empty())
+    {
         cout << "[Lỗi] Kho hàng hóa rỗng." << endl;
         return;
     }
@@ -386,12 +500,13 @@ void Kho::update() {
     cin.ignore();
 
     int index = searchByMaHang(mahang);
-    if (index == -1) {
+    if (index == -1)
+    {
         cout << "[Lỗi] Không tìm thấy hàng hóa với mã: " << mahang << endl;
         return;
     }
 
-    auto& hanghoa = kho[index];
+    auto &hanghoa = kho[index];
 
     cout << "Nhập thông tin mới cho hàng hóa(để trống để giữ nguyên):" << endl;
     string tenhang, loaihang, donvitinh, sl_str, gia_str, thuoctinh;
@@ -411,48 +526,74 @@ void Kho::update() {
     cout << "Thuộc tính (" << hanghoa->getthuoctinh() << "): ";
     getline(cin, thuoctinh);
 
-    if (!tenhang.empty()) hanghoa->settenhang(tenhang);
-    if (!loaihang.empty()) hanghoa->setloaihang(loaihang);
-    if (!donvitinh.empty()) hanghoa->setdonvitinh(donvitinh);
-    if (!sl_str.empty()){
-        if(sl_str[0] == '-' || sl_str[0] == '+'){
-            hanghoa->setsoluong(hanghoa->getsoluong()+stoll(sl_str));
+    if (!tenhang.empty())
+        hanghoa->settenhang(tenhang);
+    if (!loaihang.empty())
+        hanghoa->setloaihang(loaihang);
+    if (!donvitinh.empty())
+        hanghoa->setdonvitinh(donvitinh);
+    if (!sl_str.empty())
+    {
+        if (sl_str[0] == '-' || sl_str[0] == '+')
+        {
+            hanghoa->setsoluong(hanghoa->getsoluong() + stoll(sl_str));
         }
-        else{
+        else
+        {
             hanghoa->setsoluong(stoll(sl_str));
         }
-    } 
-    if (!gia_str.empty()){
-        if(gia_str[0] == '-' || gia_str[0] == '+'){
-            hanghoa->setdongia(hanghoa->getdongia()+stoll(gia_str));
+    }
+    if (!gia_str.empty())
+    {
+        if (gia_str[0] == '-' || gia_str[0] == '+')
+        {
+            hanghoa->setdongia(hanghoa->getdongia() + stoll(gia_str));
         }
-        else{
+        else
+        {
             hanghoa->setdongia(stoll(gia_str));
         }
     }
 
-    if (loaihang == "TP" || loaihang == "tp") {
-        ThucPham* tp = dynamic_cast<ThucPham*>(hanghoa.get());
-        if (tp) {
-            if (!thuoctinh.empty()) tp->setthuoctinh(thuoctinh);
+    if (loaihang == "TP" || loaihang == "tp")
+    {
+        ThucPham *tp = dynamic_cast<ThucPham *>(hanghoa.get());
+        if (tp)
+        {
+            if (!thuoctinh.empty())
+                tp->setthuoctinh(thuoctinh);
         }
-    } else if (loaihang == "VT" || loaihang == "vt") {
-        VatTu* vt = dynamic_cast<VatTu*>(hanghoa.get());
-        if (vt) {
-            if (!thuoctinh.empty()) vt->setthuoctinh(thuoctinh);
+    }
+    else if (loaihang == "VT" || loaihang == "vt")
+    {
+        VatTu *vt = dynamic_cast<VatTu *>(hanghoa.get());
+        if (vt)
+        {
+            if (!thuoctinh.empty())
+                vt->setthuoctinh(thuoctinh);
         }
     }
 
     cout << "[OK] Cập nhật hàng hóa thành công!" << endl;
     this->save_kho = 0;
-
 }
 
-
-void Kho::thanhtien(){
-    for(size_t i=0;i<this->kho.size();i++){
-        cout << setw(10) << this->kho[i]->getmahang() 
+void Kho::thanhtien()
+{
+    for (size_t i = 0; i < this->kho.size(); i++)
+    {
+        cout << setw(10) << this->kho[i]->getmahang()
              << setw(22) << this->kho[i]->gettenhang()
              << setw(30) << this->kho[i]->getsoluong() * this->kho[i]->getdongia() << endl;
-    } 
+    }
+}
+
+// GETTER
+int &Kho::getsoluonghang()
+{
+    return this->soluonghang;
+}
+vector<unique_ptr<Hanghoa>> &Kho::getkho()
+{
+    return this->kho;
 }

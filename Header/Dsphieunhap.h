@@ -1,17 +1,37 @@
 #pragma once
-#include "Phieunhap.h"
 #include <string>
 #include <vector>
+#include "Phieunhap.h"
 
-class Dsphieunhap {
+class Dsphieunhap
+{
 private:
     int soluongphieu;
     std::vector<Phieunhap> dsPN;
-
 public:
     Dsphieunhap();
     ~Dsphieunhap();
 
-    friend void docfile(Dsphieunhap& ds, const std::string& filename);
-    void show() const; // Thêm const
+    // Getter
+    int& getsoluongphieu();
+    std::vector<Phieunhap>& getdsPN();
+    
+    // setter
+    void setsoluongphieu(const int&);
+    void setdsPN(const std::vector<Phieunhap>&);
+
+
+    friend void docfile(Dsphieunhap &ds, const std::string &filename);
+    friend void luuphieunhap(Dsphieunhap &ds, const string &filename);
+    friend void luufile(Dsphieunhap &ds, const std::string &filename);
+
+    void show() const;
+    // thêm
+    int get_index_maphieu( std::string);
+    bool check_maphieu(const std::string);
+    bool check_date(const Date &);
+    void add(Kho &, qlncc &);
+
+    // sort
+    void sortByMaPhieu(std::vector<Phieunhap> &ds, int low, int high );
 };

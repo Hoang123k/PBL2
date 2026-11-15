@@ -1,6 +1,6 @@
 #include "Hanghoa.h"
 #include <iomanip>
-#include <string> // Sửa lại thành thư viện chuẩn C++ cho string
+#include <string> 
 using namespace std;
 
 Hanghoa::Hanghoa() : soluong(0), dongia(0) {}
@@ -13,7 +13,7 @@ Hanghoa::Hanghoa(const std::string& mahang, const std::string& tenhang,
     : mahang(mahang), tenhang(tenhang), loaihang(loaihang),
       donvitinh(donvitinh), soluong(soluong), dongia(dongia) {}
 
-// GETTER (Thêm const ở cuối)
+// GETTER
 std::string Hanghoa::getmahang() const {
     return this->mahang;
 }
@@ -33,7 +33,7 @@ long long Hanghoa::getdongia() const {
     return this->dongia;
 }
 
-// SETTER (Dùng const std::string&)
+// SETTER
 void Hanghoa::setmahang(const std::string& mahang) {
     this->mahang = mahang;
 }

@@ -10,6 +10,8 @@
 #include "./Header/menu.h"
 #include "./Header/HH.h"
 #include "./Header/NCC_func.h"
+#include "./Header/PN.h"
+#include "./Header/dsPN.h"
 using namespace std;
 
 int main()
@@ -24,15 +26,13 @@ int main()
     Phieunhap pn1;
     Dsphieunhap ds1;
 
-    auto loadData = [&]()
+    docfile(n1, "Data\\ncc.txt");
+    docfile(kho1, "Data\\kho.txt");
+    docfile(ds1, "Data\\dspn.txt");
+    for (int i = 0; i < ds1.getsoluongphieu(); i++)
     {
-        docfile(n1, "Data\\ncc.txt");
-        docfile(kho1, "Data\\kho.txt");
-        docfile(pn1, "Data\\phieunhap.txt");
-        docfile(ds1, "Data\\dspn.txt");
-    };
-
-    loadData();
+        docfile(ds1.getdsPN()[i], "Data\\phieunhap.txt");
+    }
 
     int choice = -1;
 
@@ -71,13 +71,15 @@ int main()
 
                 if (choice1 == 0)
                 {
-                    if(kho1.save_kho == 0){
-                        cout << "[!] File chưa được lưu." << endl 
-                            << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                    if (kho1.save_kho == 0)
+                    {
+                        cout << "[!] File chưa được lưu." << endl
+                             << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
                         string yes;
-                        getline(cin,yes);
-                        if(yes == "Y" || yes == "y"){
-                            luufile(kho1,"Data\\kho.txt");
+                        getline(cin, yes);
+                        if (yes == "Y" || yes == "y")
+                        {
+                            luufile(kho1, "Data\\kho.txt");
                             kho1.save_kho = 1;
                         }
                     }
@@ -115,22 +117,94 @@ int main()
             break;
         }
         case 3:
-            clear_display();
-            menu_PN();
-            cout << "\nCac chuc nang chi tiet phieu nhap chua duoc ket noi.\n";
-            stop_display();
+        {
+            string maphieu;
+            while (true)
+            {
+                cout << "Nhập mã phiếu thao tác: ";
+                getline(cin, maphieu);
+                int index = ds1.get_index_maphieu(maphieu);
+                if (index != -1)
+                {
+                    pn1 = ds1.getdsPN()[index]; 
+                    break;                      
+                }
+                cout << "[Lỗi] Mã phiếu không tồn tại" << endl;
+            }
+            int choice3 = -1;
+            while (choice3 != 0)
+            {
+                clear_display();
+                menu_PN();
+
+                if (!readInt("Nhập lựa chọn hàng hóa: ", choice3))
+                {
+                    stop_display();
+                    continue;
+                }
+
+                if (choice3 == 0)
+                {
+                    // if (kho1.save_kho == 0)
+                    // {
+                    //     cout << "[!] File chưa được lưu." << endl
+                    //          << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                    //     string yes;
+                    //     getline(cin, yes);
+                    //     if (yes == "Y" || yes == "y")
+                    //     {
+                    //         luufile(kho1, "Data\\kho.txt");
+                    //         kho1.save_kho = 1;
+                    //     }
+                    // }
+                    break;
+                }
+
+                PN_function(pn1, kho1, n1, &ds1,choice3);
+                stop_display();
+            }
             break;
+        }
 
         case 4:
-            clear_display();
-            menu_DSPN();
-            cout << "\nCac chuc nang danh sach phieu nhap chua duoc ket noi.\n";
-            stop_display();
-            break;
+        {
+            int choice4 = -1;
+            while (choice4 != 0)
+            {
+                clear_display();
+                menu_DSPN();
 
-        case 5:
+                if (!readInt("Nhập lựa chọn hàng hóa: ", choice4))
+                {
+                    stop_display();
+                    continue;
+                }
+
+                if (choice4 == 0)
+                {
+                    // if (kho1.save_kho == 0)
+                    // {
+                    //     cout << "[!] File chưa được lưu." << endl
+                    //          << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                    //     string yes;
+                    //     getline(cin, yes);
+                    //     if (yes == "Y" || yes == "y")
+                    //     {
+                    //         luufile(kho1, "Data\\kho.txt");
+                    //         kho1.save_kho = 1;
+                    //     }
+                    // }
+                    break;
+                }
+
+                DsPN_function(ds1, kho1, n1, choice4);
+                stop_display();
+            }
+            break;
+        }
+        case 6:
             clear_display();
-            loadData();
+
             cout << "Da tai lai du lieu.\n";
             stop_display();
             break;

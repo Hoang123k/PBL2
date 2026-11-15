@@ -15,13 +15,13 @@ public:
 
     long long thanhtien() const;
 
-    // GETTER (Thêm const)
+    // GETTER
     std::string getmahang() const;
     std::string getmancc() const;
     long long getsoluongnhap() const;
     long long getdongianhap() const;
 
-    // SETTER (Dùng const std::string&)
+    // SETTER
     void setmahang(const std::string& mahang);
     void setmancc(const std::string& mancc);
     void setsoluongnhap(long long soluongnhap);

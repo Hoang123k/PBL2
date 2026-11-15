@@ -5,12 +5,21 @@
 #include <string>
 
 class Kho {
-public:
+private:
     int soluonghang;
     std::vector<std::unique_ptr<Hanghoa>> kho;
+public:
     bool save_kho = 1;
     Kho();
     ~Kho();
+
+    // GETTER
+    int& getsoluonghang()  ;
+    std::vector<std::unique_ptr<Hanghoa>>& getkho()  ;
+
+    // SETTER
+    void setsoluonghang(const int&);
+    void setkho(const Hanghoa&);
 
     // Tinh thanh tien
     void thanhtien();

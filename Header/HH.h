@@ -32,28 +32,28 @@ inline void HH_function(Kho& kho1, int choice1) {
 
         switch (subChoice) {
         case 1:
-            kho1.sortByMaHang(kho1.kho, 0,
-                              static_cast<int>(kho1.kho.size()) - 1);
+            kho1.sortByMaHang(kho1.getkho(), 0,
+                              static_cast<int>(kho1.getkho().size()) - 1);
             break;
         case 2:
-            kho1.sortByTenHang(kho1.kho, 0,
-                               static_cast<int>(kho1.kho.size()) - 1);
+            kho1.sortByTenHang(kho1.getkho(), 0,
+                               static_cast<int>(kho1.getkho().size()) - 1);
             break;
         case 3:
-            kho1.sortByLoaiHang(kho1.kho, 0,
-                                static_cast<int>(kho1.kho.size()) - 1);
+            kho1.sortByLoaiHang(kho1.getkho(), 0,
+                                static_cast<int>(kho1.getkho().size()) - 1);
             break;
         case 4:
-            kho1.sortByDonViTinh(kho1.kho, 0,
-                                 static_cast<int>(kho1.kho.size()) - 1);
+            kho1.sortByDonViTinh(kho1.getkho(), 0,
+                                 static_cast<int>(kho1.getkho().size()) - 1);
             break;
         case 5:
-            kho1.sortBySoLuong(kho1.kho, 0,
-                               static_cast<int>(kho1.kho.size()) - 1);
+            kho1.sortBySoLuong(kho1.getkho(), 0,
+                               static_cast<int>(kho1.getkho().size()) - 1);
             break;
         case 6:
-            kho1.sortByDonGia(kho1.kho, 0,
-                              static_cast<int>(kho1.kho.size()) - 1);
+            kho1.sortByDonGia(kho1.getkho(), 0,
+                              static_cast<int>(kho1.getkho().size()) - 1);
             break;
         case 0:
             return;
@@ -81,7 +81,7 @@ inline void HH_function(Kho& kho1, int choice1) {
 
             int index = kho1.searchByMaHang(mahang);
             if (index >= 0) {
-                kho1.kho[index]->show();
+                kho1.getkho()[index]->show();
             }
             break;
         }

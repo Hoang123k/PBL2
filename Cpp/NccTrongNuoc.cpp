@@ -15,6 +15,7 @@ NccTrongNuoc::NccTrongNuoc(const string &ma, const string &ten, const string &sd
 
 void NccTrongNuoc::show() const
 {
+    
     cout << left
          << setw(6) << "TN"
          << setw(10) << this->mancc
