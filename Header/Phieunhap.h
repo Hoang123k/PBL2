@@ -6,46 +6,49 @@
 #include <string>
 #include <vector>
 class Dsphieunhap;
-class Phieunhap {
-private: 
+class Phieunhap
+{
+private:
     std::string maphieu;
     Date ngaynhap;
     long long soluonghh;
     std::vector<Chitietphieunhap> PN;
-    
+
 public:
     bool save_PN = 1;
     Phieunhap();
     ~Phieunhap();
-    Phieunhap(const std::string& maphieu, const Date& ngaynhap, int soluong = 0);
+    Phieunhap(const std::string &maphieu, const Date &ngaynhap, int soluong = 0);
 
     std::string getmaphieu() const;
     Date getngay() const;
     int getsoluong() const;
-    std::vector<Chitietphieunhap>& getPN();
+    std::vector<Chitietphieunhap> &getPN();
 
-    void setmaphieu(const std::string& maphieu);
-    void setngay(const Date& ngaynhap);
+    void setmaphieu(const std::string &maphieu);
+    void setngay(const Date &ngaynhap);
     void setsoluong(int soluong);
-    void setPN(const std::vector<Chitietphieunhap>& PN);
+    void setPN(const std::vector<Chitietphieunhap> &PN);
 
-    friend void docfile(Phieunhap& pn, const std::string& filename);
-    friend void luufile(Phieunhap& pn, const std::string& filename);
+    friend void docfile(Phieunhap &pn, const std::string &filename);
+    friend void luufile(Phieunhap &pn, const std::string &filename);
 
     void show() const;
 
-    //them
+    // them
     int check_mahang_ncc(const std::string, const std::string);
-    bool add_1hh(Kho&, qlncc&, Dsphieunhap*);
-    void add_nhh(const int&,Kho&,qlncc&, Dsphieunhap*);
-
+    bool add_1hh(Kho &, qlncc &, Dsphieunhap *);
+    void add_nhh(const int &, Kho &, qlncc &, Dsphieunhap *);
     // //sort
-    void sortByMaHang(vector<Chitietphieunhap> &pn,int low, int high);
+    void sortByMaHang(vector<Chitietphieunhap> &pn, int low, int high);
+    void sortByMaNCC(std::vector<Chitietphieunhap> &PN, int low, int high);
+    void sortBySoLuong(std::vector<Chitietphieunhap> &PN, int low, int high);
+    void sortByDonGia(std::vector<Chitietphieunhap> &PN, int low, int high);
     // search
+    void searchByMaHang(const std::string &ma) const;
+    void searchByTenHang(const std::string &ten) const;
     // update
+    void update(Kho &kho);
     // xoa
-
-
-    
-
+    void deleteByMaHang(const std::string &ma);
 };
