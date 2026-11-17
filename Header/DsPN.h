@@ -22,39 +22,41 @@ inline void DsPN_function(Dsphieunhap &ds, Kho &kho, qlncc &ncc, int &choice4)
     case 3:
     {
         clear_display();
-        cin.ignore();
         ds.update();
-        cout << "Nhan Enter de tiep tuc...";
-        cin.get();
         break;
     }
     case 4:
-    {
-        clear_display();
-        menu_DSPN_Sort();
-        if (!readInt("Nhập lựa chọn sắp xếp: ", subchoice))
-            return;
-        int n = static_cast<int>(ds.getdsPN().size()) - 1;
-
-        switch (subchoice)
+        while (true)
         {
-        case 1:
-            ds.sortByMaPhieu(ds.getdsPN(), 0, n);
+            clear_display();
+            menu_DSPN_Sort();
+            if (!readInt("Nhập lựa chọn sắp xếp: ", subchoice))
+            {
+                stop_display();
+                continue;
+            }
+            int n = static_cast<int>(ds.getdsPN().size()) - 1;
+
+            switch (subchoice)
+            {
+            case 1:
+                ds.sortByMaPhieu(ds.getdsPN(), 0, n);
+                break;
+            case 2:
+                ds.sortBySoLuong(ds.getdsPN(), 0, n);
+                break;
+            case 0:
+                return;
+            default:
+                cout << "[Lỗi] Lựa chọn không hợp lệ\n";
+                return;
+            }
+            clear_display();
+            cout << "[OK] Sắp xếp thành công!\n\n";
+            ds.show();
             break;
-        case 2:
-            ds.sortBySoLuong(ds.getdsPN(), 0, n);
-            break;
-        case 0:
-            return;
-        default:
-            cout << "[Lỗi] Lựa chọn không hợp lệ\n";
-            return;
         }
-        clear_display();
-        cout << "[OK] Sắp xếp thành công!\n\n";
-        ds.show();
         break;
-    }
     case 5:
     {
         string ma;
@@ -70,7 +72,6 @@ inline void DsPN_function(Dsphieunhap &ds, Kho &kho, qlncc &ncc, int &choice4)
         string ma;
         clear_display();
         cout << "Nhập mã phiếu cần xóa: ";
-        cin.ignore();
         getline(cin, ma);
         ds.deleteByMaPhieu(ma);
         break;

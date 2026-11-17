@@ -10,6 +10,7 @@ private:
     std::vector<Phieunhap> dsPN;
 
 public:
+    bool save_dsPN = 1;
     Dsphieunhap();
     ~Dsphieunhap();
 
@@ -31,11 +32,11 @@ public:
         friend long long TK_1thang(Dsphieunhap& ds);
         friend long long TK_1ngay(Dsphieunhap& ds);
         friend long long TK_khoangtg(Dsphieunhap& ds);
-        Phieunhap max_PN();
+        void max_PN();
 
 
     // Thống kê tồn kho
-        
+    void canhbao_hsd(Kho& kho);
 
     // Thống kê nhà cung cấp
     void Tyle_Ncc(qlncc& n);

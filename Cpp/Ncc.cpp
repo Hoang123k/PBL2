@@ -28,20 +28,52 @@ void Ncc::setmasothue(const string &mst) { masothue = mst; }
 
 void Ncc::nhap_thong_tin()
 {
-    cout << "Nhập tên nhà cung cấp: ";
-    getline(cin, this->tenncc);
+    while (true)
+    {
+        cout << "Nhập tên nhà cung cấp: ";
+        getline(cin, this->tenncc);
 
-    cout << "Nhập địa chỉ: ";
-    getline(cin, this->diachincc);
+        if (!this->tenncc.empty())
+            break;
+        cout << "[Lỗi] Tên NCC rỗng" << endl;
+    }
+    while (true)
+    {
 
-    cout << "Nhập số điện thoại: ";
-    getline(cin, this->sdtncc);
+        cout << "Nhập địa chỉ: ";
+        getline(cin, this->diachincc);
+        if (!this->diachincc.empty())
+            break;
+        cout << "[Lỗi] Đại chỉ NCC rỗng" << endl;
+    }
+    while (true)
+    {
+
+        cout << "Nhập số điện thoại: ";
+        getline(cin, this->sdtncc);
+        if (!this->sdtncc.empty())
+            break;
+        cout << "[Lỗi] SĐT NCC rỗng" << endl;
+    }
+    while(true){
+        cout << "Nhập mã số thuế: ";
+        getline(cin,this->masothue);
+        if(!this->masothue.empty()) break;
+        cout << "[Lỗi] Mã số thuế rỗng" << endl;
+    }
 }
 
 void Ncc::nhap()
 {
-    cout << "Nhập mã nhà cung cấp: ";
-    getline(cin, this->mancc);
+    while (true)
+    {
+
+        cout << "Nhập mã nhà cung cấp: ";
+        getline(cin, this->mancc);
+        if (!this->mancc.empty())
+            break;
+        cout << "[Lỗi] Mã NCC rỗng" << endl;
+    }
     this->mancc = toUpperString(this->mancc);
     this->nhap_thong_tin();
 }

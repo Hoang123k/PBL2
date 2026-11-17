@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Dsphieunhap.h"
 #include "transfer.h"
+#include "ThucPham.h"
 
 using namespace std;
 
@@ -101,6 +102,7 @@ void luuphieunhap(Dsphieunhap &ds, const string &filename)
     }
 
     file.close();
+    ds.save_dsPN = 1;
     cout << "[OK] Lưu toàn bộ chi tiết phiếu nhập thành công!" << endl;
 }
 
@@ -113,6 +115,7 @@ void luufile(Dsphieunhap &ds, const string &filename)
              << ds.getdsPN()[i].getngay() << "|"
              << ds.getdsPN()[i].getsoluong() << endl;
     }
+    ds.save_dsPN = 1;
     file.close();
 }
 
@@ -125,31 +128,50 @@ void luufile(Dsphieunhap &ds, const string &filename)
 long long TK_1thang(Dsphieunhap &ds)
 {
     long long cost = 0;
-    for (int i = 0; i < ds.getsoluongphieu(); i++)
+    for (size_t i = 0; i < ds.dsPN.size(); i++)
     {
         cost += cost_PN(ds.getdsPN()[i]);
     }
     return cost;
 }
 
-Phieunhap Dsphieunhap::max_PN()
+void Dsphieunhap::max_PN()
 {
+    if (this->dsPN.size() == 0)
+    {
+        cout << "Danh sách phiếu nhập rỗng" << endl;
+        return;
+    }
     long long max = 0;
     Phieunhap p;
     long long temp;
-    for (int i = 0; i < this->getsoluongphieu(); i++)
+    vector<size_t> ds_index;
+    for (size_t i = 0; i < this->dsPN.size(); i++)
     {
         temp = cost_PN(this->getdsPN()[i]);
         if (max < temp)
         {
             max = temp;
-            p = this->getdsPN()[i];
         }
     }
-    if (max)
-        return p;
-    cout << "Danh sách phiếu nhập rỗng" << endl;
-    return p;
+    for (size_t i = 0; i < this->dsPN.size(); i++)
+    {
+        if (max == cost_PN(this->dsPN[i]))
+            ds_index.push_back(i);
+    }
+    cout << "Phiếu nhập có giá trị cao nhất: " << this->dsPN[ds_index[0]].getmaphieu();
+    if (ds_index.size() == 1)
+    {
+        cout << endl;
+        return;
+    }
+    else
+    {
+        for (size_t i = 1; i < ds_index.size(); i++)
+        {
+            cout << ", " << this->dsPN[ds_index[i]].getmaphieu();
+        }
+    }
 }
 
 void Dsphieunhap::show() const
@@ -240,39 +262,37 @@ void Dsphieunhap::add(Kho &kho, qlncc &ncc)
     temp.add_nhh(soluong, kho, ncc, this);
     this->dsPN.push_back(temp);
     soluongphieu++;
+    this->save_dsPN = 0;
     cout << "[OK] Thêm phiếu nhập " << temp.getmaphieu() << " thành công." << endl;
 }
 // update
 void Dsphieunhap::update()
 {
     string ma;
-    cout << "Nhap ma phieu can cap nhat: ";
-    getline(cin, ma);
-    ma = toUpperString(ma);
-    int index = -1;
-    for (size_t i = 0; i < this->dsPN.size(); i++)
+    while (true)
     {
-        if (this->dsPN[i].getmaphieu() == ma)
+        cout << "Nhap ma phieu can cap nhat: ";
+        getline(cin, ma);
+        if (ma.empty())
         {
-            index = i;
-            break;
+            cout << "[Lỗi] Mã phiếu rỗng" << endl;
+            continue;
         }
+        ma = toUpperString(ma);
+        if (this->get_index_maphieu(ma) == -1)
+        {
+            cout << "[Lỗi] Mã phiếu không tồn tại" << endl;
+            continue;
+        }
+        break;
     }
-
+    int index = get_index_maphieu(ma);
     if (index >= 0)
     {
-        int d, m, y;
-        cout << "Nhap ngay moi: ";
-        cin >> d;
-        cout << "Nhap thang moi: ";
-        cin >> m;
-        cout << "Nhap nam moi: ";
-        cin >> y;
-        cin.ignore();
-
-        Date newDate(d, m, y);
-        this->dsPN[index].setngay(newDate);
-
+        Date date;
+        cin >> date;
+        this->dsPN[index].setngay(date);
+        this->save_dsPN = 0;
         cout << "[OK] Cap nhat thong tin phieu nhap thanh cong!\n";
     }
     else
@@ -299,6 +319,7 @@ void Dsphieunhap::sortByMaPhieu(vector<Phieunhap> &ds, int low, int high)
         int pi = i + 1;
         sortByMaPhieu(ds, low, pi - 1);
         sortByMaPhieu(ds, pi + 1, high);
+        this->save_dsPN = 0;
     }
 }
 static string toLowerCase_DS(string str)
@@ -327,6 +348,7 @@ void Dsphieunhap::sortBySoLuong(vector<Phieunhap> &ds, int low, int high)
         int pi = i + 1;
         sortBySoLuong(ds, low, pi - 1);
         sortBySoLuong(ds, pi + 1, high);
+        this->save_dsPN = 0;
     }
 }
 void Dsphieunhap::searchByMaPhieu(const string &ma) const
@@ -384,6 +406,7 @@ void Dsphieunhap::deleteByMaPhieu(const string &ma)
             it = this->dsPN.erase(it);
             this->soluongphieu = static_cast<int>(this->dsPN.size());
             found = true;
+            this->save_dsPN = 0;
             cout << "[OK] Đã xóa phiếu nhập mã '" << ma_upper << "' thành công!\n";
             break;
         }
@@ -400,9 +423,9 @@ void Dsphieunhap::deleteByMaPhieu(const string &ma)
 long long Dsphieunhap::tong_gtri_ncc(const string &ma)
 {
     long long gtri = 0;
-    for (int i = 0; i < this->soluongphieu; i++)
+    for (size_t i = 0; i < this->dsPN.size(); i++)
     {
-        for (int j = 0; j < this->dsPN[i].getsoluong(); j++)
+        for (size_t j = 0; j < this->dsPN[i].getPN().size(); j++)
         {
             if (this->dsPN[i].getPN()[j].getmancc() == ma)
                 gtri += this->dsPN[i].getPN()[j].thanhtien();
@@ -413,6 +436,12 @@ long long Dsphieunhap::tong_gtri_ncc(const string &ma)
 
 void Dsphieunhap::ncc_biggest(qlncc &n)
 {
+
+    if (this->dsPN.size() == 0)
+    {
+        cout << "Danh sách phiếu nhập rỗng" << endl;
+        return;
+    }
     vector<int> ds_index;
     long long max = 0;
     int index = -1;
@@ -423,6 +452,11 @@ void Dsphieunhap::ncc_biggest(qlncc &n)
             max = this->tong_gtri_ncc(n.getql_ncc()[i]->getmancc());
             index = i;
         }
+    }
+    if (index == -1)
+    {
+        cout << "Không có dữ liệu giao dịch.\n";
+        return;
     }
     ds_index.push_back(index);
     for (int i = 0; i < n.getsoluongncc(); i++)
@@ -440,6 +474,7 @@ void Dsphieunhap::ncc_biggest(qlncc &n)
         cout << left << setw(10) << n.getql_ncc()[ds_index[0]]->getmancc()
              << setw(32) << n.getql_ncc()[ds_index[0]]->gettenncc()
              << setw(15) << n.getql_ncc()[ds_index[0]]->getmasothue() << endl;
+        cout << "Giá trị đã giao dịch: " << this->tong_gtri_ncc(n.getql_ncc()[ds_index[0]]->getmancc()) << "VND" << endl;
         return;
     }
     cout << "Danh sách các nhà cung cấp lớn nhất: " << endl;
@@ -453,6 +488,7 @@ void Dsphieunhap::ncc_biggest(qlncc &n)
              << setw(15) << n.getql_ncc()[ds_index[i]]->getmasothue() << endl;
     }
     cout << endl;
+    cout << "Giá trị đã giao dịch: " << this->tong_gtri_ncc(n.getql_ncc()[ds_index[0]]->getmancc()) << "VND" << endl;
 }
 
 void Dsphieunhap::Tyle_Ncc(qlncc &n)
@@ -464,7 +500,7 @@ void Dsphieunhap::Tyle_Ncc(qlncc &n)
     }
     int TN = 0, QT = 0;
     long long gtri_TN = 0, gtri_QT = 0;
-    for (int i = 0; i < n.getsoluongncc(); i++)
+    for (size_t i = 0; i < n.getql_ncc().size(); i++)
     {
         if (n.getql_ncc()[i]->getloai() == "TN")
         {
@@ -480,4 +516,63 @@ void Dsphieunhap::Tyle_Ncc(qlncc &n)
 
     cout << "Số lượng NCC trong nước: " << TN << " - Tổng giá trị : " << gtri_TN << "VND" << endl
          << "Số lượng NCC quốc tế: " << QT << " - Tổng giá trị: " << gtri_QT << "VND" << endl;
+}
+
+void Dsphieunhap::canhbao_hsd(Kho &kho)
+{
+    if (kho.getkho().empty())
+    {
+        cout << "[Lỗi] Kho hàng hóa rỗng.\n";
+        return;
+    }
+
+    Date date;
+    cin >> date;
+
+    bool co_canh_bao = false;
+    for (size_t i = 0; i < kho.getkho().size(); i++)
+    {
+        ThucPham *temp = dynamic_cast<ThucPham *>(kho.getkho()[i].get());
+        if (temp == nullptr)
+            continue;
+
+        string hsd_str = temp->getthuoctinh();
+        stringstream ss(hsd_str);
+        string d_str, m_str, y_str;
+
+        if (!getline(ss, d_str, '/') || !getline(ss, m_str, '/') || !getline(ss, y_str))
+        {
+            cout << "[Cảnh báo] Mặt hàng " << temp->getmahang()
+                 << " sai định dạng HSD (" << hsd_str << ").\n";
+            continue;
+        }
+
+        try
+        {
+            int d = static_cast<int>(stringToLL(d_str));
+            int m = static_cast<int>(stringToLL(m_str));
+            int y = static_cast<int>(stringToLL(y_str));
+
+            Date hsd;
+            hsd.checkdate(d, m, y);
+            hsd = Date(d, m, y);
+
+            if (date > hsd)
+            {
+                cout << "[Hết hạn] " << temp->getmahang() << " - " << temp->gettenhang()
+                     << " | HSD: " << hsd << " | Tồn kho: " << temp->getsoluong() << endl;
+                co_canh_bao = true;
+            }
+        }
+        catch (const exception &)
+        {
+            cout << "[Cảnh báo] Mặt hàng " << temp->getmahang()
+                 << " có ngày HSD không hợp lệ (" << hsd_str << ").\n";
+        }
+    }
+
+    if (!co_canh_bao)
+    {
+        cout << "Không có thực phẩm nào hết hạn.\n";
+    }
 }

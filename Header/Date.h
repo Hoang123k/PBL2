@@ -26,4 +26,5 @@ class Date{
         friend string Date_to_string(Date);
         friend std::ostream& operator<<(std::ostream&, const Date&);
         friend std::istream& operator>>(std::istream&, Date&);
+        bool operator>(Date& d1);
 };

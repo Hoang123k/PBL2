@@ -6,24 +6,27 @@ using namespace std;
 
 VatTu::VatTu() : Hanghoa(), chatlieu("") {}
 
-VatTu::VatTu(const string& ma, const string& ten, const string& loai, 
-             const string& dvt, int sl, int gia, const string& cl)
+VatTu::VatTu(const string &ma, const string &ten, const string &loai,
+             const string &dvt, int sl, int gia, const string &cl)
     : Hanghoa(ma, ten, loai, dvt, sl, gia), chatlieu(cl) {}
 
-string VatTu::getthuoctinh() const {
-    
+string VatTu::getthuoctinh() const
+{
+
     return chatlieu;
 }
-void VatTu::setthuoctinh(const string& cl) {
+void VatTu::setthuoctinh(const string &cl)
+{
     chatlieu = cl;
 }
-void VatTu::show(){
+void VatTu::show()
+{
     cout << left
-         << setw(10) << mahang 
+         << setw(10) << mahang
          << setw(22) << tenhang
-         << setw(20) << loaihang 
+         << setw(20) << loaihang
          << setw(15) << donvitinh
-         << setw(12) << soluong 
+         << setw(12) << soluong
          << setw(10) << dongia
          << setw(15) << chatlieu << endl;
 }
@@ -31,6 +34,12 @@ void VatTu::show(){
 void VatTu::nhap_thong_tin()
 {
     Hanghoa::nhap_thong_tin();
-    cout << "Nhập chất liệu: ";
-    getline(cin, this->chatlieu);
+    while (true)
+    {
+        cout << "Nhập chất liệu: ";
+        getline(cin, this->chatlieu);
+        if (!this->chatlieu.empty())
+            break;
+        cout << "[Lỗi] Chất liệu rỗng" << endl;
+    }
 }

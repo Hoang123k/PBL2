@@ -131,10 +131,10 @@ int Date::gety() const
     return this->y;
 }
 ostream &operator<<(ostream &o, const Date &p)
-{   
-    string dd,mm;
-    (p.d >9 ) ? dd = to_string(p.d) : dd = "0"+to_string(p.d);
-    (p.m >9 ) ? mm = to_string(p.m) : mm = "0"+to_string(p.m);
+{
+    string dd, mm;
+    (p.d > 9) ? dd = to_string(p.d) : dd = "0" + to_string(p.d);
+    (p.m > 9) ? mm = to_string(p.m) : mm = "0" + to_string(p.m);
     string s = dd + "/" + mm + "/" + to_string(p.y);
 
     o << s;
@@ -155,37 +155,47 @@ void Date::sety(int &y)
     this->y = y;
 }
 
-void Date::checkdate(int& d, int& m, int& y) {
-    if (y < 1) {
-        throw std::invalid_argument("[Lỗi] Năm phải lớn hơn hoặc bằng 1.");
+void Date::checkdate(int &d, int &m, int &y)
+{
+    if (y < 1)
+    {
+        throw invalid_argument("[Lỗi] Năm phải lớn hơn hoặc bằng 1.");
     }
 
-    if (m < 1 || m > 12) {
-        throw std::invalid_argument("[Lỗi] Thắng phải nằm trong khoảng từ 1 đến 12.");
+    if (m < 1 || m > 12)
+    {
+        throw invalid_argument("[Lỗi] Thắng phải nằm trong khoảng từ 1 đến 12.");
     }
 
-    if (d < 1) {
-        throw std::invalid_argument("[Lỗi] Ngày không thể nhỏ hơn 1.");
+    if (d < 1)
+    {
+        throw invalid_argument("[Lỗi] Ngày không thể nhỏ hơn 1.");
     }
 
-    if (m == 2) {
-        bool isLeap = (year(y) == 1); 
+    if (m == 2)
+    {
+        bool isLeap = (year(y) == 1);
         int maxDay = isLeap ? 29 : 28;
-        if (d > maxDay) {
-            throw std::invalid_argument("[Lỗi] Tháng 2 năm " + std::to_string(y) + 
-                                        " chỉ có tối đa " + std::to_string(maxDay) + " ngày.");
+        if (d > maxDay)
+        {
+            throw invalid_argument("[Lỗi] Tháng 2 năm " + to_string(y) +
+                                   " chỉ có tối đa " + to_string(maxDay) + " ngày.");
         }
     }
-    
-    else if (month(m) == 1) {
-        if (d > 30) {
-            throw std::invalid_argument("[Lỗi] Tháng " + std::to_string(m) + " chỉ có tối đa 30 ngày.");
+
+    else if (month(m) == 1)
+    {
+        if (d > 30)
+        {
+            throw invalid_argument("[Lỗi] Tháng " + to_string(m) + " chỉ có tối đa 30 ngày.");
         }
     }
-    
-    else if (month(m) == -1) {
-        if (d > 31) {
-            throw std::invalid_argument("[Lỗi] Tháng " + std::to_string(m) + " chỉ có tối đa 31 ngày.");
+
+    else if (month(m) == -1)
+    {
+        if (d > 31)
+        {
+            throw invalid_argument("[Lỗi] Tháng " + to_string(m) + " chỉ có tối đa 31 ngày.");
         }
     }
 }
@@ -197,16 +207,19 @@ istream &operator>>(istream &i, Date &p)
         try
         {
             cout << "Nhập ngày tháng năm (định dạng dd/mm/yyyy): ";
-            
-            if (!getline(i, date)) {
+
+            if (!getline(i, date))
+            {
                 break;
             }
-            if (date.empty()) continue;
+            if (date.empty())
+                continue;
 
             stringstream ss(date);
             string day, month, year;
-            
-            if (!getline(ss, day, '/') || !getline(ss, month, '/') || !getline(ss, year)) {
+
+            if (!getline(ss, day, '/') || !getline(ss, month, '/') || !getline(ss, year))
+            {
                 throw invalid_argument("[Lỗi] Sai định dạng. Vui lòng nhập theo mẫu dd/mm/yyyy.");
             }
 
@@ -285,4 +298,11 @@ string Date_to_string(Date date)
     s += to_string(date.gety());
 
     return s;
+}
+
+bool Date::operator>(Date &d1)
+{
+    return (this->gety() > d1.gety()) ||
+           (this->gety() == d1.gety() && this->getm() > d1.getm()) ||
+           (this->gety() == d1.gety() && this->getm() == d1.getm() && this->getd() > d1.getd());
 }

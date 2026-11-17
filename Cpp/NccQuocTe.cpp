@@ -36,6 +36,13 @@ string NccQuocTe::getquocgia() const
 void NccQuocTe::nhap_thong_tin()
 {
     Ncc::nhap_thong_tin();
-    std::cout << "Nhập quốc gia: ";
-    std::getline(std::cin, this->quocgia);
+    while (true)
+    {
+
+        cout << "Nhập quốc gia: ";
+        getline(cin, this->quocgia);
+        if (!this->quocgia.empty())
+            break;
+        cout << "[Lỗi] Quốc gia rỗng" << endl;
+    }
 }

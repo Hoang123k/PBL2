@@ -33,8 +33,9 @@ public:
     friend void docfile(Phieunhap &pn, const std::string &filename);
     friend void luufile(Phieunhap &pn, const std::string &filename);
 
+
     // cost
-    friend long long cost_PN(Phieunhap& pn);
+    friend long long cost_PN(Phieunhap &pn);
     
 
     void show() const;
@@ -52,7 +53,7 @@ public:
     void searchByMaHang(const std::string &ma) const;
     void searchByTenHang(const std::string &ten) const;
     // update
-    void update(Kho &kho);
+    void update(Kho &kho, qlncc& ql);
     // xoa
-    void deleteByMaHang(const std::string &mahang, Kho& kho);
+    void deleteByMaHang(const std::string &mahang, Kho& kho, Dsphieunhap& ds);
 };

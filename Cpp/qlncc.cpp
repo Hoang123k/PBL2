@@ -81,7 +81,7 @@ void qlncc::show() const
     }
     cout << string(110, '=') << endl;
 }
-void qlncc::add(const std::string &mancc)
+void qlncc::add(const string &mancc)
 {
     int loai = 0;
     while (true)
@@ -90,30 +90,31 @@ void qlncc::add(const std::string &mancc)
         {
             break;
         }
-        std::cout << "[Lỗi] Vui lòng chỉ chọn 1 hoặc 2.\n";
+        cout << "[Lỗi] Vui lòng chỉ chọn 1 hoặc 2.\n";
     }
 
-    std::unique_ptr<Ncc> ncc_moi;
+    unique_ptr<Ncc> ncc_moi;
     if (loai == 1)
     {
-        ncc_moi = std::make_unique<NccTrongNuoc>();
+        ncc_moi = make_unique<NccTrongNuoc>();
     }
     else
     {
-        ncc_moi = std::make_unique<NccQuocTe>();
+        ncc_moi = make_unique<NccQuocTe>();
     }
 
     ncc_moi->setmancc(mancc);
-    ncc_moi->nhap_thong_tin(); 
+    ncc_moi->nhap_thong_tin();
 
-    this->ql_ncc.push_back(std::move(ncc_moi));
+    this->ql_ncc.push_back(move(ncc_moi));
     this->soluong_ncc = static_cast<int>(this->ql_ncc.size());
-    std::cout << "[OK] Đã tạo nhà cung cấp \"" << mancc << "\" vào hệ thống.\n";
+    this->save_Ncc = 0;
+    cout << "[OK] Đã tạo nhà cung cấp \"" << mancc << "\" vào hệ thống.\n";
 }
 void qlncc::update()
 {
     string ma;
-    cout << "Nhap ma NCC can cap nhat (nhap chinh xac): ";
+    cout << "Nhap ma NCC can cap nhat : ";
     getline(cin, ma);
     ma = toUpperString(ma);
     int index = -1;
@@ -121,7 +122,7 @@ void qlncc::update()
     {
         if (ql_ncc[i]->getmancc() == ma)
         {
-            index = i;
+            index = static_cast<int>(i);
             break;
         }
     }
@@ -135,10 +136,14 @@ void qlncc::update()
         cout << "Nhap dia chi moi: ";
         getline(cin, dc);
 
-        ql_ncc[index]->settenncc(ten);
-        ql_ncc[index]->setsdtncc(sdt);
-        ql_ncc[index]->setdiachincc(dc);
-        cout << "Cap nhat thanh cong!\n";
+        if (!ten.empty())
+            ql_ncc[index]->settenncc(ten);
+        if (!sdt.empty())
+            ql_ncc[index]->setsdtncc(sdt);
+        if (!dc.empty())
+            ql_ncc[index]->setdiachincc(dc);
+        this->save_Ncc = 0;
+        cout << "[OK] Cap nhat thanh cong!\n";
     }
     else
     {
@@ -164,6 +169,7 @@ void qlncc::sortByMaNCC(vector<unique_ptr<Ncc>> &list_ncc, int low, int high)
         int pi = i + 1;
         sortByMaNCC(list_ncc, low, pi - 1);
         sortByMaNCC(list_ncc, pi + 1, high);
+        this->save_Ncc = 0;
     }
 }
 
@@ -185,6 +191,7 @@ void qlncc::sortByTenNCC(vector<unique_ptr<Ncc>> &list_ncc, int low, int high)
         int pi = i + 1;
         sortByTenNCC(list_ncc, low, pi - 1);
         sortByTenNCC(list_ncc, pi + 1, high);
+        this->save_Ncc = 0;
     }
 }
 void qlncc::sortByLoaiNCC(vector<unique_ptr<Ncc>> &list_ncc, int low, int high)
@@ -205,6 +212,7 @@ void qlncc::sortByLoaiNCC(vector<unique_ptr<Ncc>> &list_ncc, int low, int high)
         int pi = i + 1;
         sortByLoaiNCC(list_ncc, low, pi - 1);
         sortByLoaiNCC(list_ncc, pi + 1, high);
+        this->save_Ncc = 0;
     }
 }
 int qlncc::searchByMaNCC(const string &ma) const
@@ -300,6 +308,7 @@ void qlncc::deleteByMaNCC(const string &ma)
         {
             ql_ncc.erase(it);
             soluong_ncc = ql_ncc.size();
+            this->save_Ncc = 0;
             cout << "Xoa nha cung cap thanh cong!\n";
             return;
         }
@@ -321,7 +330,7 @@ void luufile(qlncc &ql, const string &filename)
         {
             file << "TN|" << tn->getmancc() << "|" << tn->gettenncc() << "|"
                  << tn->getsdtncc() << "|" << tn->getdiachincc() << "|"
-                 << tn->getmasothue() << "\n";
+                 << tn->getmasothue() << tn->gettinhthanh() << "\n";
         }
         else
         {
@@ -334,6 +343,7 @@ void luufile(qlncc &ql, const string &filename)
             }
         }
     }
+    ql.save_Ncc = 1;
     cout << "Luu file thanh cong!\n";
 }
 

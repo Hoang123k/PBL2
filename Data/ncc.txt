@@ -1,6 +1,4 @@
 TN|NCC04|Cong ty TNHH Viet Nhat|0934567890|Thanh Khe, Da Nang|MST1029
-TN|NCC01|Cong ty Thuc pham Binh Minh|0901234567|Hai Ba Trung, Ha Noi|MST0192
-TN|NCC02|Dai ly Vat tu Alpha|0912345678|Lien Chieu, Da Nang|MST2872
 QT|NCC07|Euro Material Ltd|0700555666|Berlin|7709876|Duc
 QT|NCC05|Global Tech Supply|0888111222|Seoul|9901234|Han Quoc
 TN|NCC03|Nha phan phoi Dien may X|0987654321|Quan 1, TP HCM|MST2983

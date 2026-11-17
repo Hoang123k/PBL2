@@ -119,7 +119,7 @@ bool Kho::check_ten(const string ten)
     }
     return true;
 }
-void Kho::add(const std::string &mahang)
+void Kho::add(const string &mahang)
 {
     int loai = 0;
     while (true)
@@ -128,26 +128,27 @@ void Kho::add(const std::string &mahang)
         {
             break;
         }
-        std::cout << "[Lỗi] Vui lòng chỉ chọn 1 hoặc 2.\n";
+        cout << "[Lỗi] Vui lòng chỉ chọn 1 hoặc 2.\n";
     }
 
-    std::unique_ptr<Hanghoa> hh;
+    unique_ptr<Hanghoa> hh;
     if (loai == 1)
     {
-        hh = std::make_unique<ThucPham>();
+        hh = make_unique<ThucPham>();
     }
     else
     {
-        hh = std::make_unique<VatTu>();
+        hh = make_unique<VatTu>();
     }
 
     hh->setmahang(mahang);
-    hh->nhap_thong_tin(); // Nhập tên hàng, ĐVT, đơn giá bán và thông tin riêng (HSD / bảo hành)
-    hh->setsoluong(0);    // Bắt buộc đặt tồn = 0 để add_1hh cộng đúng số lượng nhập vào
+    hh->nhap_thong_tin();
+    hh->setsoluong(0);
     hh->setloaihang(loai == 1 ? "TP" : "VT");
-    this->kho.push_back(std::move(hh));
-    this->soluonghang = static_cast<int>(this->kho.size()); // Đồng bộ biến đếm của Kho (sửa tên biến nếu bạn đặt khác)
-    std::cout << "[OK] Đã tạo mặt hàng \"" << mahang << "\" trong kho.\n";
+    this->kho.push_back(move(hh));
+    this->soluonghang = static_cast<int>(this->kho.size());
+    this->save_kho = 0;
+    cout << "[OK] Đã tạo mặt hàng \"" << mahang << "\" trong kho.\n";
 }
 // sort
 
@@ -398,10 +399,6 @@ void Kho::deleteByMaHang(const string &mahang)
             throw runtime_error("[Lỗi] Kho hàng hóa rỗng.");
         }
         int index = searchByMaHang(mahang);
-        if (index == -1)
-        {
-            throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với mã: " + mahang);
-        }
         if (index != -1)
         {
             kho.erase(kho.begin() + index);
@@ -415,7 +412,6 @@ void Kho::deleteByMaHang(const string &mahang)
         cout << e.what() << endl;
     }
 }
-
 void Kho::update()
 {
     if (kho.empty())
@@ -423,96 +419,113 @@ void Kho::update()
         cout << "[Lỗi] Kho hàng hóa rỗng." << endl;
         return;
     }
-    string mahang;
-    cout << "Nhập mã hàng cần cập nhật: ";
-    cin >> mahang;
-    cin.ignore();
-    mahang = toUpperString(mahang);
 
-    int index = searchByMaHang(mahang);
-    if (index == -1)
+    string mahang;
+    int index = -1;
+    while (true)
     {
-        cout << "[Lỗi] Không tìm thấy hàng hóa với mã: " << mahang << endl;
-        return;
+        cout << "Nhập mã hàng cần cập nhật: ";
+        getline(cin, mahang);
+        mahang = toUpperString(mahang);
+        if (mahang.empty())
+        {
+            cout << "[Lỗi] Mã hàng không được để trống.\n";
+            continue;
+        }
+        index = searchByMaHang(mahang);
+        if (index != -1)
+            break;
     }
 
     auto &hanghoa = kho[index];
+    cout << "Nhập thông tin mới cho hàng hóa (để trống để giữ nguyên):" << endl;
 
-    cout << "Nhập thông tin mới cho hàng hóa(để trống để giữ nguyên):" << endl;
-    string tenhang, loaihang, donvitinh, sl_str, gia_str, thuoctinh;
+    string tenhang, donvitinh, sl_str, gia_str, thuoctinh;
+    long long sl_moi = hanghoa->getsoluong();
+    long long gia_moi = hanghoa->getdongia();
 
     cout << "Tên hàng (" << hanghoa->gettenhang() << "): ";
     getline(cin, tenhang);
-    cout << "Loại hàng (" << hanghoa->getloaihang() << "): ";
-    getline(cin, loaihang);
+
     cout << "Đơn vị tính (" << hanghoa->getdonvitinh() << "): ";
     getline(cin, donvitinh);
-    cout << "Nhập +/- để tăng/giảm số lượng hoặc nhập số bình thường để cập nhật số lượng mới" << endl;
-    cout << "So luong (" << hanghoa->getsoluong() << "): ";
-    getline(cin, sl_str);
-    cout << "Nhập +/- để tăng/giảm đơn giá hoặc nhập số bình thường để cập nhật đơn giá mới" << endl;
-    cout << "Đơn giá (" << hanghoa->getdongia() << "): ";
-    getline(cin, gia_str);
+
+    while (true)
+    {
+        cout << "Nhập +/- để tăng/giảm số lượng hoặc nhập số mới để thay thế\n";
+        cout << "Số lượng (" << hanghoa->getsoluong() << "): ";
+        getline(cin, sl_str);
+        if (sl_str.empty())
+            break;
+        try
+        {
+            long long val = stringToLL(sl_str);
+            long long temp = (sl_str[0] == '+' || sl_str[0] == '-')
+                                 ? (hanghoa->getsoluong() + val)
+                                 : val;
+            if (temp < 0)
+            {
+                cout << "[Lỗi] Số lượng tồn sau cập nhật không được âm.\n";
+                continue;
+            }
+            sl_moi = temp;
+            break;
+        }
+        catch (const exception &)
+        {
+            cout << "[Lỗi] Vui lòng nhập số nguyên hợp lệ.\n";
+        }
+    }
+
+    while (true)
+    {
+        cout << "Nhập +/- để tăng/giảm đơn giá hoặc nhập số mới để thay thế\n";
+        cout << "Đơn giá (" << hanghoa->getdongia() << "): ";
+        getline(cin, gia_str);
+        if (gia_str.empty())
+            break;
+        try
+        {
+            long long val = stringToLL(gia_str);
+            long long temp = (gia_str[0] == '+' || gia_str[0] == '-')
+                                 ? (hanghoa->getdongia() + val)
+                                 : val;
+            if (temp <= 0)
+            {
+                cout << "[Lỗi] Đơn giá phải lớn hơn 0.\n";
+                continue;
+            }
+            gia_moi = temp;
+            break;
+        }
+        catch (const exception &)
+        {
+            cout << "[Lỗi] Vui lòng nhập số nguyên hợp lệ.\n";
+        }
+    }
+
     cout << "Thuộc tính (" << hanghoa->getthuoctinh() << "): ";
     getline(cin, thuoctinh);
 
     if (!tenhang.empty())
         hanghoa->settenhang(tenhang);
-    if (!loaihang.empty())
-        hanghoa->setloaihang(loaihang);
     if (!donvitinh.empty())
         hanghoa->setdonvitinh(donvitinh);
     if (!sl_str.empty())
-    {
-        if (sl_str[0] == '-' || sl_str[0] == '+')
-        {
-            hanghoa->setsoluong(hanghoa->getsoluong() + stoll(sl_str));
-        }
-        else
-        {
-            hanghoa->setsoluong(stoll(sl_str));
-        }
-    }
+        hanghoa->setsoluong(sl_moi);
     if (!gia_str.empty())
-    {
-        if (gia_str[0] == '-' || gia_str[0] == '+')
-        {
-            hanghoa->setdongia(hanghoa->getdongia() + stoll(gia_str));
-        }
-        else
-        {
-            hanghoa->setdongia(stoll(gia_str));
-        }
-    }
-
-    if (loaihang == "TP" || loaihang == "tp")
-    {
-        ThucPham *tp = dynamic_cast<ThucPham *>(hanghoa.get());
-        if (tp)
-        {
-            if (!thuoctinh.empty())
-                tp->setthuoctinh(thuoctinh);
-        }
-    }
-    else if (loaihang == "VT" || loaihang == "vt")
-    {
-        VatTu *vt = dynamic_cast<VatTu *>(hanghoa.get());
-        if (vt)
-        {
-            if (!thuoctinh.empty())
-                vt->setthuoctinh(thuoctinh);
-        }
-    }
+        hanghoa->setdongia(gia_moi);
+    if (!thuoctinh.empty())
+        hanghoa->setthuoctinh(thuoctinh);
 
     cout << "[OK] Cập nhật hàng hóa thành công!" << endl;
     this->save_kho = 0;
 }
-
 void Kho::thanhtien()
 {
     for (size_t i = 0; i < this->kho.size(); i++)
     {
-        cout << setw(10) << this->kho[i]->getmahang()
+        cout << left << setw(10) << this->kho[i]->getmahang()
              << setw(22) << this->kho[i]->gettenhang()
              << setw(30) << this->kho[i]->getsoluong() * this->kho[i]->getdongia() << endl;
     }

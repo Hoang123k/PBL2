@@ -35,7 +35,6 @@ void ThucPham::nhap_thong_tin()
 {
     Date date;
     Hanghoa::nhap_thong_tin();
-    cout << "Nhập ngày sản xuất (dd/mm/yyyy): ";
     cin >> date;
     this->ngayhethan = Date_to_string(date);
 }

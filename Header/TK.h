@@ -21,7 +21,8 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
             menu_TK_NH();
             if (!readInt("Nhập lựa chọn: ", subchoice))
             {
-                break;
+                stop_display();
+                continue;
             }
             switch (subchoice)
             {
@@ -36,7 +37,8 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
                     menu_TK_NH_COST();
                     if (!readInt("Nhập lựa chọn: ", costchoice))
                     {
-                        return;
+                        stop_display();
+                        continue;
                     }
                     switch (costchoice)
                     {
@@ -66,14 +68,15 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
                     clear_display();
                     if (!readInt("Nhập lựa chọn (max - 1 / min - 2 / quay lại - 0): ", maxchoice))
                     {
-                        break;
+                        stop_display();
+                        continue;
                     }
                     switch (maxchoice)
                     {
                     case 0:
                         break;
                     case 1:
-                        ds.max_PN().show();
+                        ds.max_PN();
                         system("pause");
                         break;
                     case 2:
@@ -87,6 +90,7 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
                 break;
             }
             case 3:
+
                 break;
             default:
                 cout << "[Lỗi] Lựa chọn không hợp lệ" << endl;
@@ -106,14 +110,15 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
             menu_TK_Kho();
             if (!readInt("Nhập lựa chọn: ", subchoice))
             {
-                return;
+                stop_display();
+                continue;
             }
             switch (subchoice)
             {
             case 0:
                 break;
             case 1:
-                cout << "Tổng số tiền các mặt hàng trong kho: " << k.tongtien() << "VND"<< endl;
+                cout << "Tổng số tiền các mặt hàng trong kho: " << k.tongtien() << "VND" << endl;
                 system("pause");
                 break;
             case 2:
@@ -121,6 +126,9 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
                 system("pause");
                 break;
             case 3:
+                clear_display();
+                ds.canhbao_hsd(k);
+                stop_display();
                 break;
             default:
                 cout << "[Lỗi] Lựa chọn không hợp lệ" << endl;
@@ -140,7 +148,8 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
             menu_TK_NCC();
             if (!readInt("Nhập lựa chọn: ", subchoice))
             {
-                return;
+                stop_display();
+                continue;
             }
             switch (subchoice)
             {
@@ -156,13 +165,13 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
                 string ma;
                 cout << "Nhập mã nhà cung cấp: ";
                 getline(cin, ma);
-                if(n.get_index_mancc(ma) == -1)
+                if (n.get_index_mancc(ma) == -1)
                 {
                     cout << "[Lỗi] Mã nhà cung cấp không tồn tại" << endl;
                     stop_display();
                     break;
                 }
-                cout << "Tổng giá trị nhà cung cấp " << ma << " giao dịch: "<<ds.tong_gtri_ncc(ma) << "VND" << endl;
+                cout << "Tổng giá trị nhà cung cấp " << ma << " giao dịch: " << ds.tong_gtri_ncc(ma) << "VND" << endl;
                 stop_display();
                 break;
             }

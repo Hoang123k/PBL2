@@ -9,7 +9,7 @@ class qlncc
     int soluong_ncc;
     std::vector<std::unique_ptr<Ncc>> ql_ncc;
 public:
-
+    bool save_Ncc = 1;
     qlncc();
     ~qlncc();
 

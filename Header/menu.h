@@ -184,7 +184,7 @@ inline void menu_TK_NH()
     cout << " 1. Tổng chi phí nhập hàng" << endl;
     cout << " 2. Phiếu nhập có giá trị cao nhất/ thấp nhất" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
-    cout << "==============================================" << endl;   
+    cout << "==============================================" << endl;
 }
 inline void menu_TK_NH_COST()
 {
@@ -195,7 +195,7 @@ inline void menu_TK_NH_COST()
     cout << " 2. Trong tháng" << endl;
     cout << " 3. Khoảng thòi gian" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
-    cout << "==============================================" << endl; 
+    cout << "==============================================" << endl;
 }
 inline void menu_TK_Kho()
 {
@@ -205,7 +205,7 @@ inline void menu_TK_Kho()
     cout << " 1. Tổng giá trị hàng tồn kho" << endl;
     cout << " 2. Cảnh báo mặt hàng sắp hết" << endl;
     cout << " 3. Cảnh báo thực phẩm hết hạn sử dụng" << endl;
-    cout << " 0. Quay về màn hình chính" << endl;   
+    cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
 inline void menu_TK_NCC()
@@ -228,22 +228,22 @@ inline void stop_display()
 {
     system("pause");
 }
-inline bool readInt(const std::string &prompt, int &value)
+inline bool readInt(const string &prompt, int &value)
 {
-    std::cout << prompt;
+    cout << prompt;
 
-    std::string line;
-    if (!std::getline(std::cin, line))
+    string line;
+    if (!getline(cin, line))
     {
         return false;
     }
 
-    std::stringstream input(line);
+    stringstream input(line);
     char extra;
 
     if (!(input >> value) || (input >> extra))
     {
-        std::cout << "Lua chon khong hop le. Vui long nhap so.\n";
+        cout << "Lua chon khong hop le. Vui long nhap so.\n";
         return false;
     }
 

@@ -107,6 +107,22 @@ int main()
                     stop_display();
                     continue;
                 }
+                if (choice2 == 0)
+                {
+                    if (n1.save_Ncc == 0)
+                    {
+                        cout << "[!] File chưa được lưu." << endl
+                             << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                        string yes;
+                        getline(cin, yes);
+                        if (yes == "Y" || yes == "y")
+                        {
+                            luufile(n1, "Data\\ncc.txt");
+                            n1.save_Ncc = 1;
+                        }
+                    }
+                    break;
+                }
                 NCC_function(n1, choice2);
                 if (choice2 == 0)
                 {
@@ -145,18 +161,18 @@ int main()
 
                 if (choice3 == 0)
                 {
-                    // if (kho1.save_kho == 0)
-                    // {
-                    //     cout << "[!] File chưa được lưu." << endl
-                    //          << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
-                    //     string yes;
-                    //     getline(cin, yes);
-                    //     if (yes == "Y" || yes == "y")
-                    //     {
-                    //         luufile(kho1, "Data\\kho.txt");
-                    //         kho1.save_kho = 1;
-                    //     }
-                    // }
+                    if (pn1.save_PN == 0)
+                    {
+                        cout << "[!] File chưa được lưu." << endl
+                             << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                        string yes;
+                        getline(cin, yes);
+                        if (yes == "Y" || yes == "y")
+                        {
+                            luufile(pn1, "Data\\phieunhap.txt");
+                            pn1.save_PN = 1;
+                        }
+                    }
                     break;
                 }
 
@@ -182,18 +198,18 @@ int main()
 
                 if (choice4 == 0)
                 {
-                    // if (kho1.save_kho == 0)
-                    // {
-                    //     cout << "[!] File chưa được lưu." << endl
-                    //          << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
-                    //     string yes;
-                    //     getline(cin, yes);
-                    //     if (yes == "Y" || yes == "y")
-                    //     {
-                    //         luufile(kho1, "Data\\kho.txt");
-                    //         kho1.save_kho = 1;
-                    //     }
-                    // }
+                    if (ds1.save_dsPN == 0)
+                    {
+                        cout << "[!] File chưa được lưu." << endl
+                             << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                        string yes;
+                        getline(cin, yes);
+                        if (yes == "Y" || yes == "y")
+                        {
+                            luufile(ds1, "Data\\dspn.txt");
+                            ds1.save_dsPN = 1;
+                        }
+                    }
                     break;
                 }
 
@@ -215,24 +231,6 @@ int main()
                     stop_display();
                     continue;
                 }
-
-                if (choice5 == 0)
-                {
-                    // if (kho1.save_kho == 0)
-                    // {
-                    //     cout << "[!] File chưa được lưu." << endl
-                    //          << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
-                    //     string yes;
-                    //     getline(cin, yes);
-                    //     if (yes == "Y" || yes == "y")
-                    //     {
-                    //         luufile(kho1, "Data\\kho.txt");
-                    //         kho1.save_kho = 1;
-                    //     }
-                    // }
-                    break;
-                }
-
                 TK_function(ds1, kho1, n1, choice5);
                 stop_display();
             }
@@ -240,7 +238,6 @@ int main()
         }
         case 6:
             clear_display();
-
             cout << "Da tai lai du lieu.\n";
             stop_display();
             break;
@@ -251,6 +248,5 @@ int main()
             break;
         }
     }
-
     return 0;
 }
