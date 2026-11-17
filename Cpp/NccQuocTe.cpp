@@ -32,3 +32,10 @@ string NccQuocTe::getquocgia() const
 {
     return quocgia;
 }
+
+void NccQuocTe::nhap_thong_tin()
+{
+    Ncc::nhap_thong_tin();
+    std::cout << "Nhập quốc gia: ";
+    std::getline(std::cin, this->quocgia);
+}

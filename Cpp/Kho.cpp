@@ -99,9 +99,9 @@ void luufile(Kho &k, const string &filename)
 
 bool Kho::check_ma(const string ma)
 {
-    for (size_t i = 0; i < kho.size(); i++)
+    for (size_t i = 0; i < this->kho.size(); i++)
     {
-        if (ma == kho[i]->getmahang())
+        if (toUpperString(ma) == this->kho[i]->getmahang())
         {
             return false;
         }
@@ -119,107 +119,36 @@ bool Kho::check_ten(const string ten)
     }
     return true;
 }
-void Kho::add()
+void Kho::add(const std::string &mahang)
 {
-    cout << "\n================ THÊM MẶT HÀNG MỚI ================" << endl;
-    string phanloai, mahang, tenhang, donvitinh, sl, gia, thuoctinh;
-    long long soluong, dongia;
-    do
+    int loai = 0;
+    while (true)
     {
-        cout << "Nhập phân loại(Thực phẩm: TP/tp - Vật tư: VT/vt ): ";
-        cin >> phanloai;
-        cin.ignore();
-        if (phanloai != "TP" && phanloai != "tp" && phanloai != "VT" && phanloai != "vt")
+        if (readInt("Chọn loại hàng hóa mới (1. Thực phẩm / 2. Vật tư): ", loai) && (loai == 1 || loai == 2))
         {
-            cout << "Phân loại hàng không hợp lệ! Xin nhập VT/vt hoặc TP/tp.\n";
-            continue;
-        }
-        while (true)
-        {
-            cout << "Nhập mã hàng: ";
-            getline(cin, mahang);
-            if (check_ma(mahang) == true)
-                break;
-            else
-            {
-                cout << "Mã hàng đã tồn tại! Xin nhập lại mã hàng!" << endl;
-            }
-        }
-
-        while (true)
-        {
-            cout << "Nhập tên hàng: ";
-            getline(cin, tenhang);
-            if (check_ten(tenhang) == true)
-                break;
-            else
-            {
-                cout << "Tên hàng đã tồn tại. Xin nhập lại tên hàng!" << endl;
-            }
-        }
-        cout << "Nhập đơn vị tính: ";
-        getline(cin, donvitinh);
-        while (true)
-        {
-            cout << "Nhập số lượng: ";
-            getline(cin, sl);
-
-            try
-            {
-                soluong = stringToLL(sl);
-                if (soluong <= 0)
-                {
-                    cout << "Lỗi: Số lượng phải lớn hơn 0. Xin hãy nhập lại.\n";
-                    continue;
-                }
-                break;
-            }
-            catch (const exception &e)
-            {
-                cout << "Lỗi định dạng! Vui lòng chỉ nhập số nguyên hợp lệ.\n";
-            }
-        }
-        while (true)
-        {
-            cout << "Nhập đơn giá: ";
-            getline(cin, gia);
-
-            try
-            {
-                dongia = stringToLL(gia);
-                if (dongia <= 0)
-                {
-                    cout << "Lỗi: Đơn giá phải lớn hơn 0. Xin hãy nhập lại.\n";
-                    continue;
-                }
-                break;
-            }
-            catch (const exception &e)
-            {
-                cout << "Lỗi định dạng! Vui lòng chỉ nhập số nguyên hợp lệ.\n";
-            }
-        }
-        cout << "Nhập thuộc tính(NSX hoặc đặc điểm): ";
-        getline(cin, thuoctinh);
-
-        if (phanloai == "TP" || phanloai == "tp")
-        {
-            this->kho.push_back(make_unique<ThucPham>(mahang, tenhang, "TP", donvitinh, soluong, dongia, thuoctinh));
-            cout << "[OK] Thêm thực phẩm thành công!\n";
-            this->save_kho = 0;
             break;
         }
-        else if (phanloai == "VT" || phanloai == "vt")
-        {
-            this->kho.push_back(make_unique<VatTu>(mahang, tenhang, "VT", donvitinh, soluong, dongia, thuoctinh));
-            cout << "[OK] Thêm vật tư thành công!\n";
-            break;
-        }
-    } while (true);
+        std::cout << "[Lỗi] Vui lòng chỉ chọn 1 hoặc 2.\n";
+    }
 
-    this->soluonghang = this->kho.size();
+    std::unique_ptr<Hanghoa> hh;
+    if (loai == 1)
+    {
+        hh = std::make_unique<ThucPham>();
+    }
+    else
+    {
+        hh = std::make_unique<VatTu>();
+    }
+
+    hh->setmahang(mahang);
+    hh->nhap_thong_tin(); // Nhập tên hàng, ĐVT, đơn giá bán và thông tin riêng (HSD / bảo hành)
+    hh->setsoluong(0);    // Bắt buộc đặt tồn = 0 để add_1hh cộng đúng số lượng nhập vào
+    hh->setloaihang(loai == 1 ? "TP" : "VT");
+    this->kho.push_back(std::move(hh));
+    this->soluonghang = static_cast<int>(this->kho.size()); // Đồng bộ biến đếm của Kho (sửa tên biến nếu bạn đặt khác)
+    std::cout << "[OK] Đã tạo mặt hàng \"" << mahang << "\" trong kho.\n";
 }
-
 // sort
 
 void Kho::sortByMaHang(vector<unique_ptr<Hanghoa>> &kho, int low, int high)
@@ -360,9 +289,9 @@ int Kho::searchByMaHang(const string &ma) const
     {
         for (size_t i = 0; i < kho.size(); ++i)
         {
-            if (kho[i]->getmahang() == ma)
+            if (kho[i]->getmahang() == toUpperString(ma))
             {
-                return i;
+                return static_cast<int>(i);
             }
         }
         throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với mã: " + ma);
@@ -498,6 +427,7 @@ void Kho::update()
     cout << "Nhập mã hàng cần cập nhật: ";
     cin >> mahang;
     cin.ignore();
+    mahang = toUpperString(mahang);
 
     int index = searchByMaHang(mahang);
     if (index == -1)
@@ -587,12 +517,12 @@ void Kho::thanhtien()
              << setw(30) << this->kho[i]->getsoluong() * this->kho[i]->getdongia() << endl;
     }
 }
-long long Kho::tongtien() const 
+long long Kho::tongtien() const
 {
-    long long sum =0 ;
-    for(int i=0;i<this->soluonghang;i++)
+    long long sum = 0;
+    for (int i = 0; i < this->soluonghang; i++)
     {
-    sum+= this->kho[i]->getdongia()*this->kho[i]->getsoluong();
+        sum += this->kho[i]->getdongia() * this->kho[i]->getsoluong();
     }
     return sum;
 }
@@ -600,15 +530,16 @@ long long Kho::tongtien() const
 void Kho::canhbao_sl()
 {
     bool check = 0;
-    for(int i=0;i<this->soluonghang;i++)
+    for (int i = 0; i < this->soluonghang; i++)
     {
-        if(this->kho[i]->getsoluong() < 10 )
+        if (this->kho[i]->getsoluong() < 10)
         {
             cout << "Mặt hàng " << this->kho[i]->gettenhang() << " sắp hết!" << endl;
             check = 1;
         }
     }
-    if(!check) cout << "Không có mặt hàng nào sắp hết" << endl;
+    if (!check)
+        cout << "Không có mặt hàng nào sắp hết" << endl;
 }
 
 // GETTER
@@ -621,7 +552,7 @@ vector<unique_ptr<Hanghoa>> &Kho::getkho()
     return this->kho;
 }
 // Setter
-void Kho::setsoluonghang(const int& sl)
+void Kho::setsoluonghang(const int &sl)
 {
     this->soluonghang = sl;
 }

@@ -98,7 +98,7 @@ inline void PN_function(Phieunhap &pn, Kho &kho, qlncc &ncc, Dsphieunhap *ds, in
         std::string ma;
         std::cout << "Nhap ma hang can xoa khoi phieu: ";
         std::getline(std::cin, ma);
-        pn.deleteByMaHang(ma);
+        pn.deleteByMaHang(ma,kho);
         break;
     }
     case 7:

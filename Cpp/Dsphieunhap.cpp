@@ -106,7 +106,7 @@ void luuphieunhap(Dsphieunhap &ds, const string &filename)
 
 void luufile(Dsphieunhap &ds, const string &filename)
 {
-    ofstream file(filename, std::ios::app);
+    ofstream file(filename);
     for (int i = 0; i < ds.getsoluongphieu(); i++)
     {
         file << toUpperString(ds.getdsPN()[i].getmaphieu()) << "|"
@@ -202,6 +202,7 @@ void Dsphieunhap::add(Kho &kho, qlncc &ncc)
     {
         cout << "Nhập mã phiếu mới: ";
         getline(cin, maphieu);
+        maphieu = toUpperString(maphieu);
         if (maphieu.empty())
         {
             cout << "[Lỗi] Mã phiếu trống." << endl;
@@ -236,11 +237,7 @@ void Dsphieunhap::add(Kho &kho, qlncc &ncc)
         }
     }
     Phieunhap temp(maphieu, date, soluong);
-    for (int i = 0; i < soluong; i++)
-    {
-        cout << "Nhập thông tin hàng hóa thứ " << i + 1 << endl;
-        temp.add_1hh(kho, ncc, this);
-    }
+    temp.add_nhh(soluong, kho, ncc, this);
     this->dsPN.push_back(temp);
     soluongphieu++;
     cout << "[OK] Thêm phiếu nhập " << temp.getmaphieu() << " thành công." << endl;
@@ -251,7 +248,7 @@ void Dsphieunhap::update()
     string ma;
     cout << "Nhap ma phieu can cap nhat: ";
     getline(cin, ma);
-
+    ma = toUpperString(ma);
     int index = -1;
     for (size_t i = 0; i < this->dsPN.size(); i++)
     {
@@ -358,7 +355,7 @@ void Dsphieunhap::searchByNgayNhap(Date &ngay) const
 {
     bool found = false;
     string searchNgay = Date_to_string(ngay);
-    for (size_t i = 0; i > this->dsPN.size(); i++)
+    for (size_t i = 0; i < this->dsPN.size(); i++)
     {
         string currentNgay = Date_to_string(this->dsPN[i].getngay());
         if (currentNgay.find(searchNgay) != string::npos)
@@ -379,13 +376,15 @@ void Dsphieunhap::searchByNgayNhap(Date &ngay) const
 void Dsphieunhap::deleteByMaPhieu(const string &ma)
 {
     bool found = false;
+    string ma_upper = toUpperString(ma);
     for (auto it = this->dsPN.begin(); it != this->dsPN.end();)
     {
-        if (it->getmaphieu() == ma)
+        if (it->getmaphieu() == ma_upper)
         {
             it = this->dsPN.erase(it);
+            this->soluongphieu = static_cast<int>(this->dsPN.size());
             found = true;
-            cout << "[OK] Đã xóa phiếu nhập mã '" << ma << "' thành công!\n";
+            cout << "[OK] Đã xóa phiếu nhập mã '" << ma_upper << "' thành công!\n";
             break;
         }
         else
@@ -394,7 +393,7 @@ void Dsphieunhap::deleteByMaPhieu(const string &ma)
         }
     }
     if (!found)
-        cout << "[Lỗi] Không tìm thấy phiếu nhập mã '" << ma << "'!\n";
+        cout << "[Lỗi] Không tìm thấy phiếu nhập mã '" << ma_upper << "'!\n";
 }
 
 // TK_Ncc
@@ -406,7 +405,7 @@ long long Dsphieunhap::tong_gtri_ncc(const string &ma)
         for (int j = 0; j < this->dsPN[i].getsoluong(); j++)
         {
             if (this->dsPN[i].getPN()[j].getmancc() == ma)
-                gtri += cost_PN(this->dsPN[i]);
+                gtri += this->dsPN[i].getPN()[j].thanhtien();
         }
     }
     return gtri;
@@ -438,9 +437,9 @@ void Dsphieunhap::ncc_biggest(qlncc &n)
              << setw(32) << "Tên NCC: "
              << setw(15) << "Mã số thuế: " << endl;
 
-        cout << left << setw(10) << n.getql_ncc()[0]->getmancc()
-             << setw(32) << n.getql_ncc()[0]->gettenncc()
-             << setw(15) << n.getql_ncc()[0]->getmasothue() << endl;
+        cout << left << setw(10) << n.getql_ncc()[ds_index[0]]->getmancc()
+             << setw(32) << n.getql_ncc()[ds_index[0]]->gettenncc()
+             << setw(15) << n.getql_ncc()[ds_index[0]]->getmasothue() << endl;
         return;
     }
     cout << "Danh sách các nhà cung cấp lớn nhất: " << endl;
@@ -449,36 +448,36 @@ void Dsphieunhap::ncc_biggest(qlncc &n)
          << setw(15) << "Mã số thuế: " << endl;
     for (size_t i = 0; i < ds_index.size(); i++)
     {
-        cout << left << setw(10) << n.getql_ncc()[i]->getmancc()
-             << setw(32) << n.getql_ncc()[i]->gettenncc()
-             << setw(15) << n.getql_ncc()[i]->getmasothue() << endl;
+        cout << left << setw(10) << n.getql_ncc()[ds_index[i]]->getmancc()
+             << setw(32) << n.getql_ncc()[ds_index[i]]->gettenncc()
+             << setw(15) << n.getql_ncc()[ds_index[i]]->getmasothue() << endl;
     }
     cout << endl;
 }
 
-void Dsphieunhap::Tyle_Ncc(qlncc& n)
+void Dsphieunhap::Tyle_Ncc(qlncc &n)
 {
-    if(!n.getsoluongncc())
+    if (!n.getsoluongncc())
     {
         cout << "Không có NCC nào" << endl;
         return;
     }
     int TN = 0, QT = 0;
-    long long gtri_TN =0, gtri_QT = 0;
-    for(int i=0;i<n.getsoluongncc();i++)
+    long long gtri_TN = 0, gtri_QT = 0;
+    for (int i = 0; i < n.getsoluongncc(); i++)
     {
-        if(n.getql_ncc()[i]->getloai() == "TN")
+        if (n.getql_ncc()[i]->getloai() == "TN")
         {
             TN++;
-            gtri_TN+= this->tong_gtri_ncc(n.getql_ncc()[i]->getmancc());
+            gtri_TN += this->tong_gtri_ncc(n.getql_ncc()[i]->getmancc());
         }
         else
         {
             QT++;
-            gtri_QT+= this->tong_gtri_ncc(n.getql_ncc()[i]->getmancc());
+            gtri_QT += this->tong_gtri_ncc(n.getql_ncc()[i]->getmancc());
         }
     }
 
-    cout << "Số lượng NCC trong nước: " << TN << " - Tổng giá trị : " << gtri_TN  << "VND"<< endl
-         << "Số lượng NCC quốc tế: " << QT << " - Tổng giá trị: " << gtri_QT << "VND" <<endl;
+    cout << "Số lượng NCC trong nước: " << TN << " - Tổng giá trị : " << gtri_TN << "VND" << endl
+         << "Số lượng NCC quốc tế: " << QT << " - Tổng giá trị: " << gtri_QT << "VND" << endl;
 }

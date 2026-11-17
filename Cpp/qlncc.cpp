@@ -7,6 +7,7 @@
 #include "NccTrongNuoc.h"
 #include "NccQuocTe.h"
 #include "../Header/transfer.h"
+#include "../Header/menu.h"
 
 using namespace std;
 
@@ -80,65 +81,41 @@ void qlncc::show() const
     }
     cout << string(110, '=') << endl;
 }
-
-void qlncc::add()
+void qlncc::add(const std::string &mancc)
 {
-    string loai, ma, ten, sdt, dc, extra;
-    cout << "Nhap loai NCC (TN - Trong nuoc / QT - Quoc te): ";
-    getline(cin, loai);
-    for (char &c : loai)
+    int loai = 0;
+    while (true)
     {
-        c = toupper(c);
-    }
-    if (loai != "TN" && loai != "QT")
-    {
-        cout << "Loai NCC khong hop le!\n";
-        return;
-    }
-
-    cout << "Nhap ma NCC: ";
-    getline(cin, ma);
-    for (const auto &ncc : ql_ncc)
-    {
-        if (ncc->getmancc() == ma)
+        if (readInt("Chọn loại nhà cung cấp mới (1. Trong nước / 2. Quốc tế): ", loai) && (loai == 1 || loai == 2))
         {
-            cout << "Loi: Ma NCC '" << ma << "' da ton tai! Vui long them lai voi ma khac.\n";
-            return;
+            break;
         }
+        std::cout << "[Lỗi] Vui lòng chỉ chọn 1 hoặc 2.\n";
     }
-    cout << "Nhap ten NCC: ";
-    getline(cin, ten);
-    cout << "Nhap SDT: ";
-    getline(cin, sdt);
-    cout << "Nhap dia chi: ";
-    getline(cin, dc);
 
-    if (loai == "TN")
+    std::unique_ptr<Ncc> ncc_moi;
+    if (loai == 1)
     {
-        cout << "Nhap ma so thue: ";
-        getline(cin, extra);
-        ql_ncc.push_back(make_unique<NccTrongNuoc>(ma, ten, sdt, dc, extra));
-        soluong_ncc++;
-        cout << "Them NCC trong nuoc thanh cong!\n";
+        ncc_moi = std::make_unique<NccTrongNuoc>();
     }
-    else if (loai == "QT")
+    else
     {
-        string mst;
-        cout << "Nhap ma so thue: ";
-        getline(cin, mst);
-        cout << "Nhap quoc gia: ";
-        getline(cin, extra);
-        ql_ncc.push_back(make_unique<NccQuocTe>(ma, ten, sdt, dc, mst, extra));
-        soluong_ncc++;
-        cout << "Them NCC Quoc te thanh cong!\n";
+        ncc_moi = std::make_unique<NccQuocTe>();
     }
+
+    ncc_moi->setmancc(mancc);
+    ncc_moi->nhap_thong_tin(); 
+
+    this->ql_ncc.push_back(std::move(ncc_moi));
+    this->soluong_ncc = static_cast<int>(this->ql_ncc.size());
+    std::cout << "[OK] Đã tạo nhà cung cấp \"" << mancc << "\" vào hệ thống.\n";
 }
-
 void qlncc::update()
 {
     string ma;
     cout << "Nhap ma NCC can cap nhat (nhap chinh xac): ";
     getline(cin, ma);
+    ma = toUpperString(ma);
     int index = -1;
     for (size_t i = 0; i < ql_ncc.size(); i++)
     {
@@ -319,7 +296,7 @@ void qlncc::deleteByMaNCC(const string &ma)
 {
     for (auto it = ql_ncc.begin(); it != ql_ncc.end(); ++it)
     {
-        if ((*it)->getmancc() == ma)
+        if ((*it)->getmancc() == toUpperString(ma))
         {
             ql_ncc.erase(it);
             soluong_ncc = ql_ncc.size();
@@ -364,7 +341,7 @@ int qlncc::get_index_mancc(const string &ma) const
 {
     for (int i = 0; i < this->soluong_ncc; i++)
     {
-        if (this->ql_ncc[i]->getmancc() == ma)
+        if (this->ql_ncc[i]->getmancc() == toUpperString(ma))
             return i;
     }
     return -1;

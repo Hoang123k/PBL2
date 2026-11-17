@@ -14,10 +14,10 @@ inline void HH_function(Kho& kho1, int choice1) {
         kho1.show();
         break;
 
-    case 2:
-        clear_display();
-        kho1.add();
-        break;
+    // case 2:
+    //     clear_display();
+    //     kho1.add();
+    //     break;
 
     case 3:
         clear_display();

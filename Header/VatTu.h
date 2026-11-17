@@ -15,4 +15,5 @@ public:
     std::string getthuoctinh() const override;
     void setthuoctinh(const std::string&) override;
     void show() override;
+    void nhap_thong_tin() override;
 };

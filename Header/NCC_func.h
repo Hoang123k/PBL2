@@ -15,9 +15,9 @@ inline void NCC_function(qlncc &ql, int choice)
         ql.show();
         break;
 
-    case 2:
-        ql.add();
-        break;
+    // case 2:
+    //     ql.add();
+    //     break;
 
     case 3:
         ql.update();

@@ -1,7 +1,9 @@
 #pragma once
+#include<iostream>
 #include <string>
 
-class Ncc {
+class Ncc
+{
 protected:
     std::string loaincc;
     std::string mancc;
@@ -13,7 +15,7 @@ protected:
 public:
     Ncc();
     virtual ~Ncc();
-    Ncc(const std::string& ma, const std::string& ten, const std::string& sdt, const std::string& dc);
+    Ncc(const std::string &ma, const std::string &ten, const std::string &sdt, const std::string &dc);
 
     // GETTER
     std::string getloai() const;
@@ -24,12 +26,15 @@ public:
     std::string getmasothue() const;
 
     // SETTER
-    void setloaincc(const std::string& loai);
-    void setmancc(const std::string& ma);
-    void settenncc(const std::string& ten);
-    void setsdtncc(const std::string& sdt);
-    void setdiachincc(const std::string& dc);
-    void setmasothue(const std::string& mst);
+    void setloaincc(const std::string &loai);
+    void setmancc(const std::string &ma);
+    void settenncc(const std::string &ten);
+    void setsdtncc(const std::string &sdt);
+    void setdiachincc(const std::string &dc);
+    void setmasothue(const std::string &mst);
 
     virtual void show() const = 0;
+
+    virtual void nhap_thong_tin();
+    virtual void nhap();
 };

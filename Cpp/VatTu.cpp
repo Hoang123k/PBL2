@@ -27,3 +27,10 @@ void VatTu::show(){
          << setw(10) << dongia
          << setw(15) << chatlieu << endl;
 }
+
+void VatTu::nhap_thong_tin()
+{
+    Hanghoa::nhap_thong_tin();
+    cout << "Nhập chất liệu: ";
+    getline(cin, this->chatlieu);
+}

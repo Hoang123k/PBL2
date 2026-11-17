@@ -30,7 +30,7 @@ public:
     friend void luufile(Kho& k, const std::string& filename);
     void show() const;
     // Them
-    void add();
+    void add(const std::string&);
     bool check_ma(const std::string);
     bool check_ten(const std::string);
     // update

@@ -11,8 +11,8 @@ protected:
 public:
     Hanghoa();
     virtual ~Hanghoa();
-    Hanghoa(const std::string&, const std::string&,
-            const std::string&, const std::string&,
+    Hanghoa(const std::string &, const std::string &,
+            const std::string &, const std::string &,
             long long, long long);
 
     std::string getmahang() const;
@@ -23,13 +23,16 @@ public:
     long long getdongia() const;
     virtual std::string getthuoctinh() const = 0;
 
-    void setmahang(const std::string&);
-    void settenhang(const std::string&);
-    void setloaihang(const std::string&);
-    void setdonvitinh(const std::string&);
+    void setmahang(const std::string &);
+    void settenhang(const std::string &);
+    void setloaihang(const std::string &);
+    void setdonvitinh(const std::string &);
     void setsoluong(long long);
     void setdongia(long long);
-    virtual void setthuoctinh(const std::string&) = 0;
+    virtual void setthuoctinh(const std::string &) = 0;
 
     virtual void show() = 0;
+
+    virtual void nhap_thong_tin();
+    virtual void nhap();
 };

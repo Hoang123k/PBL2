@@ -28,3 +28,10 @@ string NccTrongNuoc::getmasothue() const
 {
     return masothue;
 }
+
+void NccTrongNuoc::nhap_thong_tin()
+{
+    Ncc::nhap_thong_tin();
+    std::cout << "Nhập tỉnh/thành phố: ";
+    getline(std::cin, this->tinhthanh);
+}

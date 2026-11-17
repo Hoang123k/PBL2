@@ -13,4 +13,5 @@ public:
     void show() const override;
     std::string getmasothue() const;
     std::string getquocgia() const;
+    void nhap_thong_tin() override;
 };

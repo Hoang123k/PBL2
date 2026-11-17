@@ -26,7 +26,7 @@ public:
 
     int get_index_mancc(const std::string& ma) const ;
     // Them
-    void add();
+    void add(const std::string&);
 
     // Update
     void update();

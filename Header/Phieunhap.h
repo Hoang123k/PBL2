@@ -54,5 +54,5 @@ public:
     // update
     void update(Kho &kho);
     // xoa
-    void deleteByMaHang(const std::string &ma);
+    void deleteByMaHang(const std::string &mahang, Kho& kho);
 };

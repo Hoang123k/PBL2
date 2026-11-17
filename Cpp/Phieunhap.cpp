@@ -83,11 +83,11 @@ void docfile(Phieunhap &pn, const string &chitiet)
         getline(ss, gia, '|');
         soluong = stoll(sl);
         dongia = stoll(gia);
-        if (maphieu == pn.getmaphieu())
+        if (toUpperString(maphieu) == pn.getmaphieu())
         {
             Chitietphieunhap temp;
             temp.setmahang(toUpperString(mahang));
-            temp.setmancc(mancc);
+            temp.setmancc(toUpperString(mancc));
             temp.setsoluongnhap(soluong);
             temp.setdongianhap(dongia);
             pn.PN.push_back(temp);
@@ -98,7 +98,7 @@ void docfile(Phieunhap &pn, const string &chitiet)
 
 void luufile(Phieunhap &pn, const string &filename)
 {
-    ofstream file(filename, std::ios::app);
+    ofstream file(filename);
     if (!file.is_open())
     {
         cout << "[Lỗi] Không thể mở file" << endl;
@@ -117,12 +117,12 @@ void luufile(Phieunhap &pn, const string &filename)
 }
 
 // cost
-long long cost_PN(Phieunhap& pn)
+long long cost_PN(Phieunhap &pn)
 {
-    long long cost=0;
-    for(int i=0;i<pn.getsoluong();i++)
+    long long cost = 0;
+    for (int i = 0; i < pn.getsoluong(); i++)
     {
-        cost+= pn.getPN()[i].getdongianhap();
+        cost += pn.getPN()[i].thanhtien();
     }
     return cost;
 }
@@ -153,70 +153,122 @@ int Phieunhap::check_mahang_ncc(const string mahang, const string mancc)
     }
     return -1;
 }
-
 bool Phieunhap::add_1hh(Kho &kho, qlncc &ncc, Dsphieunhap *ds)
 {
     string mahang, mancc, sl, gia;
-    long long soluong, dongia;
+    long long soluong = 0, dongia = 0;
+
     while (true)
     {
         while (true)
         {
             cout << "Nhập mã hàng: ";
             getline(cin, mahang);
+            mahang = toUpperString(mahang);
+            if (mahang.empty())
+            {
+                cout << "[Lỗi] Mã hàng không được để trống.\n";
+                continue;
+            }
+
             if (kho.check_ma(mahang) == false)
+            {
                 break;
+            }
             else
-                cout << "[Lỗi] Mã hàng không tồn tại" << endl;
+            {
+                cout << "[!] Mã hàng \"" << mahang << "\" chưa có trong kho.\n";
+                cout << "Bạn có muốn thêm mặt hàng mới này vào kho luôn không? (Y/y để thêm - phím khác để nhập lại mã): ";
+                string chon;
+                getline(cin, chon);
+                if (chon == "Y" || chon == "y")
+                {
+                    kho.add(mahang);
+                    break;
+                }
+            }
         }
-        // while(true){
-        //     cout << "Nhập mã nhà cung cấp: ";
-        //     getline(cin,mancc);
-        //     if(Ncc.check_ma(mancc) == true) break;
-        //     cout << "[Lỗi] Mã nhà cung cấp không tồn tại" << endl;
-        // }
-        cout << "Nhập mã nhà cung cấp: ";
-        getline(cin, mancc);
+        while (true)
+        {
+            cout << "Nhập mã nhà cung cấp: ";
+            getline(cin, mancc);
+            mancc = toUpperString(mancc);
+            if (mancc.empty())
+            {
+                cout << "[Lỗi] Mã nhà cung cấp không được để trống.\n";
+                continue;
+            }
+
+            if (ncc.get_index_mancc(mancc) != -1)
+            {
+                break;
+            }
+            else
+            {
+                cout << "[!] Mã nhà cung cấp \"" << mancc << "\" chưa có trong hệ thống.\n";
+                cout << "Bạn có muốn thêm nhà cung cấp mới này luôn không? (Y/y để thêm - phím khác để nhập lại mã): ";
+                string chon;
+                getline(cin, chon);
+                if (chon == "Y" || chon == "y")
+                {
+                    ncc.add(mancc);
+                    break;
+                }
+            }
+        }
+
+        int idx_hh_kho = kho.searchByMaHang(mahang);
         int index = check_mahang_ncc(mahang, mancc);
         if (index != -1)
         {
-            cout << "[!]Hàng hóa của nhà cung cấp này đã có trong phiếu nhập trước đó!" << endl;
-            cout << "Thêm số lượng hàng(Y/y) - Nhập lại mã hàng và nhà cung cấp(phím bất kỳ): ";
-            string yes;
-            getline(cin, yes);
-            if (yes == "Y" || yes == "y")
+            cout << "[!] Mặt hàng " << mahang << " của NCC " << mancc << " đã có trong phiếu!\n";
+            cout << "    -> Hiện tại: SL = " << this->PN[index].getsoluongnhap()
+                 << " | Đơn giá = " << this->PN[index].getdongianhap() << " VND\n";
+            cout << "Chọn hướng xử lý:\n";
+            cout << "  1. Điều chỉnh số lượng (giữ nguyên đơn giá cũ)\n";
+            cout << "  2. Sửa lại đơn giá của dòng này (nếu nhập nhầm giá)\n";
+            cout << "  3. Thêm dòng mới với đơn giá khác (nhập lô mới)\n";
+            cout << "  0. Nhập lại mã hàng và NCC khác\n";
+
+            string chon_xl;
+            cout << "Lựa chọn của bạn: ";
+            getline(cin, chon_xl);
+
+            if (chon_xl == "1")
             {
                 while (true)
                 {
-                    cout << "Nhập số lượng hàng tăng(+) - giảm(-) - Thay đổi(không dấu): ";
+                    cout << "Nhập số lượng tăng (+x), giảm (-x) hoặc thay đổi (không dấu): ";
                     string sl_nhap;
                     getline(cin, sl_nhap);
-                    long long soluong_nhap;
+
+                    if (sl_nhap.empty())
+                    {
+                        cout << "[Lỗi] Không được để trống.\n";
+                        continue;
+                    }
+
                     try
                     {
-                        soluong_nhap = stringToLL(sl_nhap);
-                        if (!sl_nhap.empty())
+                        long long val = stringToLL(sl_nhap);
+                        long long sl_cu = this->PN[index].getsoluongnhap();
+                        long long sl_moi = (sl_nhap[0] == '-' || sl_nhap[0] == '+') ? (sl_cu + val) : val;
+
+                        if (sl_moi <= 0)
                         {
-                            if (sl_nhap[0] == '-' || sl_nhap[0] == '+')
-                            {
-                                if (this->PN[index].getsoluongnhap() + soluong_nhap <= 0)
-                                    cout << "[Lỗi] Số lượng nhập phải lớn hơn 0. Xin hãy nhập lại.\n";
-                                else
-                                {
-                                    this->PN[index].setsoluongnhap(this->PN[index].getsoluongnhap() + soluong_nhap);
-                                }
-                            }
-                            else
-                            {
-                                if (soluong_nhap <= 0)
-                                {
-                                    cout << "[Lỗi] Số lượng phải lớn hơn 0. Xin hãy nhập lại.\n";
-                                    continue;
-                                }
-                                this->PN[index].setsoluongnhap(soluong_nhap);
-                            }
+                            cout << "[Lỗi] Số lượng sau điều chỉnh phải lớn hơn 0. Xin hãy nhập lại.\n";
+                            continue;
                         }
-                        cout << "[OK] Cập nhật số lượng thành công" << endl;
+
+                        this->PN[index].setsoluongnhap(sl_moi);
+                        if (idx_hh_kho != -1)
+                        {
+                            long long chenh_lech = sl_moi - sl_cu;
+                            long long ton_hien_tai = kho.getkho()[idx_hh_kho]->getsoluong();
+                            kho.getkho()[idx_hh_kho]->setsoluong(ton_hien_tai + chenh_lech);
+                        }
+
+                        cout << "[OK] Cập nhật số lượng thành công.\n";
                         return false;
                     }
                     catch (const exception &e)
@@ -225,45 +277,116 @@ bool Phieunhap::add_1hh(Kho &kho, qlncc &ncc, Dsphieunhap *ds)
                     }
                 }
             }
-            else
+            else if (chon_xl == "2")
+            {
+                while (true)
+                {
+                    cout << "Nhập đơn giá mới: ";
+                    string gia_moi_str;
+                    getline(cin, gia_moi_str);
+                    try
+                    {
+                        long long gia_moi = stringToLL(gia_moi_str);
+                        if (gia_moi <= 0)
+                        {
+                            cout << "[Lỗi] Đơn giá phải lớn hơn 0. Xin hãy nhập lại.\n";
+                            continue;
+                        }
+
+                        this->PN[index].setdongianhap(gia_moi);
+                        cout << "[OK] Cập nhật đơn giá thành công.\n";
+                        return false; // Không làm thay đổi tồn kho và không thêm dòng mới
+                    }
+                    catch (const exception &e)
+                    {
+                        cout << "[Lỗi] Định dạng không hợp lệ! Vui lòng chỉ nhập số nguyên.\n";
+                    }
+                }
+            }
+            else if (chon_xl == "3") // 3. Thêm dòng mới với đơn giá khác
+            {
+                cout << "-> Tiến hành nhập số lượng và đơn giá mới cho lô hàng này:\n";
+                // Rơi tự nhiên xuống Bước 4 & Bước 5 để tạo phần tử Chitietphieunhap mới
+            }
+            else // Chọn 0 hoặc phím khác -> Quay lại Bước 1
             {
                 continue;
             }
         }
+
+        // =====================================================================
+        // BƯỚC 4: NHẬP SỐ LƯỢNG NHẬP
+        // =====================================================================
         while (true)
         {
-            cout << "Nhập số lượng: ";
+            cout << "Nhập số lượng nhập: ";
             getline(cin, sl);
-
             try
             {
                 soluong = stringToLL(sl);
                 if (soluong <= 0)
                 {
-                    cout << "Lỗi: Số lượng phải lớn hơn 0. Xin hãy nhập lại.\n";
+                    cout << "[Lỗi] Số lượng phải lớn hơn 0. Xin hãy nhập lại.\n";
                     continue;
                 }
                 break;
             }
             catch (const exception &e)
             {
-                cout << "Lỗi định dạng! Vui lòng chỉ nhập số nguyên hợp lệ.\n";
+                cout << "[Lỗi] Định dạng không hợp lệ! Vui lòng chỉ nhập số nguyên.\n";
             }
         }
-        dongia = kho.getkho()[kho.searchByMaHang(mahang)]->getdongia();
-        this->PN.push_back(Chitietphieunhap(mahang, mancc, soluong, dongia));
-        cout << "[OK] Thêm hàng hóa mới vào phiếu nhập " << this->getmaphieu() << " thành công." << endl;
-        long long index_1 = ds->get_index_maphieu(this->getmaphieu());
-        if (index_1 != -1)
+
+        // =====================================================================
+        // BƯỚC 5: NHẬP ĐƠN GIÁ NHẬP
+        // =====================================================================
+        while (true)
         {
-            int current_sl = ds->getdsPN()[index_1].getsoluong();
-            ds->getdsPN()[index_1].setsoluong(current_sl + 1);
+            cout << "Nhập đơn giá nhập: ";
+            getline(cin, gia);
+            try
+            {
+                dongia = stringToLL(gia);
+                if (dongia <= 0)
+                {
+                    cout << "[Lỗi] Đơn giá phải lớn hơn 0. Xin hãy nhập lại.\n";
+                    continue;
+                }
+                break;
+            }
+            catch (const exception &e)
+            {
+                cout << "[Lỗi] Định dạng không hợp lệ! Vui lòng chỉ nhập số nguyên.\n";
+            }
         }
+
+        // =====================================================================
+        // BƯỚC 6: LƯU CHI TIẾT PHIẾU, CỘNG TỒN KHO & ĐỒNG BỘ DANH SÁCH PHIẾU
+        // =====================================================================
+        this->PN.push_back(Chitietphieunhap(mahang, mancc, soluong, dongia));
+        this->soluonghh = static_cast<int>(this->PN.size());
+
+        if (idx_hh_kho != -1)
+        {
+            long long ton_hien_tai = kho.getkho()[idx_hh_kho]->getsoluong();
+            kho.getkho()[idx_hh_kho]->setsoluong(ton_hien_tai + soluong);
+        }
+
+        if (ds != nullptr)
+        {
+            int index_1 = ds->get_index_maphieu(this->getmaphieu());
+            if (index_1 != -1)
+            {
+                ds->getdsPN()[index_1].setsoluong(static_cast<int>(this->PN.size()));
+            }
+        }
+
+        cout << "[OK] Thêm hàng hóa mới vào phiếu nhập " << this->getmaphieu() << " thành công.\n";
         break;
     }
+
     return true;
 }
-
 void Phieunhap::add_nhh(const int &n, Kho &kho, qlncc &ncc, Dsphieunhap *ds)
 {
     for (int i = 0; i < n; i++)
@@ -355,38 +478,242 @@ void Phieunhap::sortByDonGia(vector<Chitietphieunhap> &PN, int low, int high)
 }
 void Phieunhap::update(Kho &kho)
 {
-    string ma;
-    cout << "Nhap ma hang trong phieu can cap nhat: ";
-    getline(cin, ma);
+    if (this->PN.empty())
+    {
+        cout << "[Lỗi] Phiếu nhập rỗng." << endl;
+        return;
+    }
 
-    int index = -1;
+    string mahang;
+    cout << "Nhập mã hàng cần cập nhật: ";
+    getline(cin, mahang);
+    mahang = toUpperString(mahang);
+
+    // Tìm các dòng có mã hàng trùng khớp trong phiếu
+    vector<size_t> ds_index;
     for (size_t i = 0; i < this->PN.size(); i++)
     {
-        if (this->PN[i].getmahang() == ma)
+        if (this->PN[i].getmahang() == mahang)
         {
-            index = i;
-            break;
+            ds_index.push_back(i);
         }
     }
 
-    if (index >= 0)
+    if (ds_index.empty())
     {
-        long long sl_moi, gia_moi;
-
-        cout << "Nhap so luong nhap moi: ";
-        cin >> sl_moi;
-        cout << "Nhap don gia nhap moi: ";
-        cin >> gia_moi;
-        cin.ignore();
-
-        this->PN[index].setsoluongnhap(sl_moi);
-        this->PN[index].setdongianhap(gia_moi);
-
-        cout << "[OK] Cap nhat thong tin hang hoa thanh cong!\n";
+        cout << "[Lỗi] Không tìm thấy hàng hóa với mã: " << mahang << endl;
+        return;
     }
-    else
+
+    size_t index = ds_index[0];
+    // Nếu trong phiếu có từ 2 lô cùng mã hàng (khác NCC hoặc khác giá), chọn dòng cụ thể
+    if (ds_index.size() > 1)
     {
-        cout << "[Lỗi] Khong tim thay hang hoa co ma '" << ma << "' trong phieu nhap!\n";
+        cout << "[!] Tìm thấy " << ds_index.size() << " dòng của mã hàng " << mahang << ":\n";
+        for (size_t k = 0; k < ds_index.size(); k++)
+        {
+            size_t idx = ds_index[k];
+            cout << "  " << k + 1 << ". Mã NCC: " << this->PN[idx].getmancc()
+                 << " | Số lượng: " << this->PN[idx].getsoluongnhap()
+                 << " | Đơn giá: " << this->PN[idx].getdongianhap() << endl;
+        }
+        while (true)
+        {
+            cout << "Chọn dòng cần cập nhật (1 - " << ds_index.size() << "): ";
+            string chon;
+            getline(cin, chon);
+            try
+            {
+                long long stt = stringToLL(chon);
+                if (stt >= 1 && stt <= static_cast<long long>(ds_index.size()))
+                {
+                    index = ds_index[stt - 1];
+                    break;
+                }
+                cout << "[Lỗi] Lựa chọn không hợp lệ.\n";
+            }
+            catch (const exception &)
+            {
+                cout << "[Lỗi] Vui lòng chỉ nhập số nguyên.\n";
+            }
+        }
+    }
+
+    auto &chitiet = this->PN[index];
+    long long sl_cu = chitiet.getsoluongnhap();
+    long long gia_cu = chitiet.getdongianhap();
+
+    cout << "Nhập thông tin mới cho hàng hóa trong phiếu (để trống để giữ nguyên):" << endl;
+    string mancc, sl_str, gia_str;
+
+    cout << "Mã NCC (" << chitiet.getmancc() << "): ";
+    getline(cin, mancc);
+
+    cout << "Nhập +/- để tăng/giảm số lượng hoặc nhập số bình thường để cập nhật số lượng mới" << endl;
+    cout << "Số lượng nhập (" << sl_cu << "): ";
+    getline(cin, sl_str);
+
+    cout << "Nhập +/- để tăng/giảm đơn giá hoặc nhập số bình thường để cập nhật đơn giá mới" << endl;
+    cout << "Đơn giá nhập (" << gia_cu << "): ";
+    getline(cin, gia_str);
+
+    // 1. Xử lý cập nhật số lượng và đồng bộ Kho trước (nếu có nhập)
+    if (!sl_str.empty())
+    {
+        try
+        {
+            long long sl_moi = 0;
+            if (sl_str[0] == '-' || sl_str[0] == '+')
+            {
+                sl_moi = sl_cu + stringToLL(sl_str);
+            }
+            else
+            {
+                sl_moi = stringToLL(sl_str);
+            }
+
+            if (sl_moi <= 0)
+            {
+                cout << "[Lỗi] Số lượng nhập mới phải lớn hơn 0. Hủy cập nhật số lượng!" << endl;
+                return;
+            }
+
+            // Đồng bộ phần chênh lệch vào tồn kho của Kho
+            long long chenh_lech = sl_moi - sl_cu;
+            int idx_kho = kho.searchByMaHang(mahang);
+            if (idx_kho != -1)
+            {
+                long long ton_hien_tai = kho.getkho()[idx_kho]->getsoluong();
+                if (ton_hien_tai + chenh_lech < 0)
+                {
+                    cout << "[Lỗi] Tồn kho hiện tại (" << ton_hien_tai << ") không đủ để giảm bớt " << -chenh_lech << "." << endl;
+                    return;
+                }
+                kho.getkho()[idx_kho]->setsoluong(ton_hien_tai + chenh_lech);
+            }
+
+            chitiet.setsoluongnhap(sl_moi);
+        }
+        catch (const exception &)
+        {
+            cout << "[Lỗi] Định dạng số lượng không hợp lệ!" << endl;
+            return;
+        }
+    }
+
+    // 2. Xử lý cập nhật đơn giá (nếu có nhập)
+    if (!gia_str.empty())
+    {
+        try
+        {
+            long long gia_moi = 0;
+            if (gia_str[0] == '-' || gia_str[0] == '+')
+            {
+                gia_moi = gia_cu + stringToLL(gia_str);
+            }
+            else
+            {
+                gia_moi = stringToLL(gia_str);
+            }
+
+            if (gia_moi <= 0)
+            {
+                cout << "[Lỗi] Đơn giá nhập mới phải lớn hơn 0. Hủy cập nhật đơn giá!" << endl;
+                return;
+            }
+
+            chitiet.setdongianhap(gia_moi);
+        }
+        catch (const exception &)
+        {
+            cout << "[Lỗi] Định dạng đơn giá không hợp lệ!" << endl;
+            return;
+        }
+    }
+
+    // 3. Xử lý cập nhật mã NCC (nếu có nhập)
+    if (!mancc.empty())
+    {
+        chitiet.setmancc(toUpperString(mancc));
+    }
+
+    cout << "[OK] Cập nhật hàng hóa trong phiếu nhập thành công!" << endl;
+}
+
+void Phieunhap::deleteByMaHang(const string &mahang, Kho &kho)
+{
+    try
+    {
+        if (this->PN.empty())
+        {
+            throw runtime_error("[Lỗi] Phiếu nhập rỗng.");
+        }
+
+        string ma_upper = toUpperString(mahang);
+        vector<size_t> ds_index;
+        for (size_t i = 0; i < this->PN.size(); i++)
+        {
+            if (this->PN[i].getmahang() == ma_upper)
+            {
+                ds_index.push_back(i);
+            }
+        }
+
+        if (ds_index.empty())
+        {
+            throw runtime_error("[Lỗi] Không tìm thấy hàng hóa với mã: " + ma_upper);
+        }
+
+        size_t index = ds_index[0];
+        if (ds_index.size() > 1)
+        {
+            cout << "[!] Tìm thấy " << ds_index.size() << " dòng của mã hàng " << ma_upper << ":\n";
+            for (size_t k = 0; k < ds_index.size(); k++)
+            {
+                size_t idx = ds_index[k];
+                cout << "  " << k + 1 << ". Mã NCC: " << this->PN[idx].getmancc()
+                     << " | Số lượng: " << this->PN[idx].getsoluongnhap()
+                     << " | Đơn giá: " << this->PN[idx].getdongianhap() << endl;
+            }
+            while (true)
+            {
+                cout << "Chọn dòng cần xóa (1 - " << ds_index.size() << "): ";
+                string chon;
+                getline(cin, chon);
+                try
+                {
+                    long long stt = stringToLL(chon);
+                    if (stt >= 1 && stt <= static_cast<long long>(ds_index.size()))
+                    {
+                        index = ds_index[stt - 1];
+                        break;
+                    }
+                    cout << "[Lỗi] Lựa chọn không hợp lệ.\n";
+                }
+                catch (const exception &)
+                {
+                    cout << "[Lỗi] Vui lòng chỉ nhập số nguyên.\n";
+                }
+            }
+        }
+
+        // Trừ số lượng của dòng bị xóa khỏi tồn kho trong Kho
+        long long sl_xoa = this->PN[index].getsoluongnhap();
+        int idx_kho = kho.searchByMaHang(ma_upper);
+        if (idx_kho != -1)
+        {
+            long long ton_hien_tai = kho.getkho()[idx_kho]->getsoluong();
+            long long ton_moi = (ton_hien_tai - sl_xoa < 0) ? 0 : (ton_hien_tai - sl_xoa);
+            kho.getkho()[idx_kho]->setsoluong(ton_moi);
+        }
+
+        this->PN.erase(this->PN.begin() + index);
+        this->soluonghh = static_cast<int>(this->PN.size());
+        cout << "[OK] Đã xóa hàng hóa với mã: " << ma_upper << endl;
+    }
+    catch (const runtime_error &e)
+    {
+        cout << e.what() << endl;
     }
 }
 static string toLowerCase_PN(string str)
@@ -430,34 +757,5 @@ void Phieunhap::searchByMaHang(const string &ma) const
     else
     {
         cout << string(65, '=') << endl;
-    }
-}
-
-void Phieunhap::deleteByMaHang(const string &ma)
-{
-    bool found = false;
-
-    for (auto it = this->PN.begin(); it != this->PN.end();)
-    {
-
-        if (it->getmahang() == ma)
-        {
-            it = this->PN.erase(it);
-            found = true;
-
-            this->soluonghh = this->PN.size();
-
-            cout << "[OK] Đã xóa hàng hóa có mã '" << ma << "' khỏi phiếu nhập thành công!\n";
-            break;
-        }
-        else
-        {
-            ++it;
-        }
-    }
-
-    if (!found)
-    {
-        cout << "[Lỗi] Không tìm thấy hàng hóa có mã '" << ma << "' trong phiếu nhập!\n";
     }
 }
