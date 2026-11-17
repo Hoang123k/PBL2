@@ -273,7 +273,6 @@ void Phieunhap::add_nhh(const int &n, Kho &kho, qlncc &ncc, Dsphieunhap *ds)
     }
     cout << "[OK] Thêm " << n << " hàng hóa vào phiếu nhập " << this->getmaphieu() << " thành công" << endl;
 }
-
 void Phieunhap::sortByMaHang(vector<Chitietphieunhap> &PN, int low, int high)
 {
     if (low < high)
@@ -292,5 +291,173 @@ void Phieunhap::sortByMaHang(vector<Chitietphieunhap> &PN, int low, int high)
         int pi = i + 1;
         sortByMaHang(PN, low, pi - 1);
         sortByMaHang(PN, pi + 1, high);
+    }
+}
+void Phieunhap::sortByMaNCC(vector<Chitietphieunhap> &PN, int low, int high)
+{
+    if (low < high)
+    {
+        string pivot = PN[high].getmancc();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (PN[j].getmancc() < pivot)
+            {
+                i++;
+                swap(PN[i], PN[j]);
+            }
+        }
+        swap(PN[i + 1], PN[high]);
+        int pi = i + 1;
+        sortByMaNCC(PN, low, pi - 1);
+        sortByMaNCC(PN, pi + 1, high);
+    }
+}
+void Phieunhap::sortBySoLuong(vector<Chitietphieunhap> &PN, int low, int high)
+{
+    if (low < high)
+    {
+        long long pivot = PN[high].getsoluongnhap();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (PN[j].getsoluongnhap() < pivot)
+            {
+                i++;
+                swap(PN[i], PN[j]);
+            }
+        }
+        swap(PN[i + 1], PN[high]);
+        int pi = i + 1;
+        sortBySoLuong(PN, low, pi - 1);
+        sortBySoLuong(PN, pi + 1, high);
+    }
+}
+void Phieunhap::sortByDonGia(vector<Chitietphieunhap> &PN, int low, int high)
+{
+    if (low < high)
+    {
+        long long pivot = PN[high].getdongianhap();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (PN[j].getdongianhap() < pivot)
+            {
+                i++;
+                swap(PN[i], PN[j]);
+            }
+        }
+        swap(PN[i + 1], PN[high]);
+        int pi = i + 1;
+        sortByDonGia(PN, low, pi - 1);
+        sortByDonGia(PN, pi + 1, high);
+    }
+}
+void Phieunhap::update(Kho &kho)
+{
+    string ma;
+    cout << "Nhap ma hang trong phieu can cap nhat: ";
+    getline(cin, ma);
+
+    int index = -1;
+    for (size_t i = 0; i < this->PN.size(); i++)
+    {
+        if (this->PN[i].getmahang() == ma)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index >= 0)
+    {
+        long long sl_moi, gia_moi;
+
+        cout << "Nhap so luong nhap moi: ";
+        cin >> sl_moi;
+        cout << "Nhap don gia nhap moi: ";
+        cin >> gia_moi;
+        cin.ignore();
+
+        this->PN[index].setsoluongnhap(sl_moi);
+        this->PN[index].setdongianhap(gia_moi);
+
+        cout << "[OK] Cap nhat thong tin hang hoa thanh cong!\n";
+    }
+    else
+    {
+        cout << "[Lỗi] Khong tim thay hang hoa co ma '" << ma << "' trong phieu nhap!\n";
+    }
+}
+static string toLowerCase_PN(string str)
+{
+    for (char &c : str)
+    {
+        c = tolower(c);
+    }
+    return str;
+}
+
+void Phieunhap::searchByMaHang(const string &ma) const
+{
+    bool found = false;
+    string searchMa = toLowerCase_PN(ma);
+
+    for (size_t i = 0; i < this->PN.size(); i++)
+    {
+        string currentMa = toLowerCase_PN(this->PN[i].getmahang());
+
+        if (currentMa.find(searchMa) != string::npos)
+        {
+            if (!found)
+            {
+                cout << left
+                     << setw(12) << "Ma Hang"
+                     << setw(12) << "Ma NCC"
+                     << setw(15) << "So Luong"
+                     << setw(15) << "Don Gia" << endl;
+                cout << string(65, '-') << endl;
+            }
+            this->PN[i].show();
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "[Lỗi] Không tìm thấy hàng hóa có mã chứa từ khóa: " << ma << endl;
+    }
+    else
+    {
+        cout << string(65, '=') << endl;
+    }
+}
+
+void Phieunhap::deleteByMaHang(const string &ma)
+{
+    bool found = false;
+
+    for (auto it = this->PN.begin(); it != this->PN.end();)
+    {
+
+        if (it->getmahang() == ma)
+        {
+            it = this->PN.erase(it);
+            found = true;
+
+            this->soluonghh = this->PN.size();
+
+            cout << "[OK] Đã xóa hàng hóa có mã '" << ma << "' khỏi phiếu nhập thành công!\n";
+            break;
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "[Lỗi] Không tìm thấy hàng hóa có mã '" << ma << "' trong phiếu nhập!\n";
     }
 }
