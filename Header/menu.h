@@ -15,8 +15,9 @@ inline void menu()
     cout << " 2. Nhà cung cấp" << endl;
     cout << " 3. Chi tiết phiếu nhập" << endl;
     cout << " 4. Danh sách phiếu nhập" << endl;
-    cout << " 5. Lưu vào file" << endl;
-    // cout << " 5. Tải lại dữ liệu (Reload từ File)" << endl;
+    cout << " 5. Báo cáo và thống kê" << endl;
+    // cout << " 6. Tải lại dữ liệu (Reload từ File)" << endl;
+    cout << " 7. Lưu vào file" << endl;
     cout << " 0. Thoát chương trình                        " << endl;
     cout << "==============================================" << endl;
 }
@@ -182,8 +183,6 @@ inline void menu_TK_NH()
     cout << "==============================================" << endl;
     cout << " 1. Tổng chi phí nhập hàng" << endl;
     cout << " 2. Phiếu nhập có giá trị cao nhất/ thấp nhất" << endl;
-    cout << " 3. Tần suất nhật" << endl;
-    cout << " 4. Giá nhập trung bình của từng mặt hàng" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;   
 }
@@ -211,13 +210,14 @@ inline void menu_TK_Kho()
 }
 inline void menu_TK_NCC()
 {
-    cout << "\n==============================================" << endl;
+    cout << "\n=====================================================" << endl;
     cout << "           THỐNG KÊ NHÀ CUNG CẤP         " << endl;
-    cout << "==============================================" << endl;
-    cout << " 1. Tỷ lệ nhà cung cấp trong nước và quốc tế" << endl;
+    cout << "======================================================" << endl;
+    cout << " 1. Tỷ lệ NCC và tổng giá trị giao dịch mỗi loại" << endl;
     cout << " 2. Tổng giá trị giao dịch của các nhà cung cấp" << endl;
+    cout << " 3. Đối tác lớn nhất" << endl;
     cout << " 0. Quay về màn hình chính" << endl;
-    cout << "==============================================" << endl;
+    cout << "======================================================" << endl;
 }
 inline void clear_display()
 {

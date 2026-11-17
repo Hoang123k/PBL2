@@ -587,6 +587,29 @@ void Kho::thanhtien()
              << setw(30) << this->kho[i]->getsoluong() * this->kho[i]->getdongia() << endl;
     }
 }
+long long Kho::tongtien() const 
+{
+    long long sum =0 ;
+    for(int i=0;i<this->soluonghang;i++)
+    {
+    sum+= this->kho[i]->getdongia()*this->kho[i]->getsoluong();
+    }
+    return sum;
+}
+// Canh bao
+void Kho::canhbao_sl()
+{
+    bool check = 0;
+    for(int i=0;i<this->soluonghang;i++)
+    {
+        if(this->kho[i]->getsoluong() < 10 )
+        {
+            cout << "Mặt hàng " << this->kho[i]->gettenhang() << " sắp hết!" << endl;
+            check = 1;
+        }
+    }
+    if(!check) cout << "Không có mặt hàng nào sắp hết" << endl;
+}
 
 // GETTER
 int &Kho::getsoluonghang()
@@ -596,4 +619,9 @@ int &Kho::getsoluonghang()
 vector<unique_ptr<Hanghoa>> &Kho::getkho()
 {
     return this->kho;
+}
+// Setter
+void Kho::setsoluonghang(const int& sl)
+{
+    this->soluonghang = sl;
 }

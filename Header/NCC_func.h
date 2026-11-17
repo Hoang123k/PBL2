@@ -33,10 +33,10 @@ inline void NCC_function(qlncc &ql, int choice)
         switch (subChoice)
         {
         case 1:
-            ql.sortByMaNCC(ql.ql_ncc, 0, static_cast<int>(ql.ql_ncc.size()) - 1);
+            ql.sortByMaNCC(ql.getql_ncc(), 0, static_cast<int>(ql.getql_ncc().size()) - 1);
             break;
         case 2:
-            ql.sortByTenNCC(ql.ql_ncc, 0, static_cast<int>(ql.ql_ncc.size()) - 1);
+            ql.sortByTenNCC(ql.getql_ncc(), 0, static_cast<int>(ql.getql_ncc().size()) - 1);
             break;
         case 0:
             return;

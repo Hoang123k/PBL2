@@ -269,7 +269,7 @@ const Date Date::operator--(int)
     return temp;
 }
 
-string Date_to_string(Date &date)
+string Date_to_string(Date date)
 {
     string s = "";
     if (date.getd() < 10)

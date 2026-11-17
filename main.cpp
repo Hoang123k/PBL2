@@ -12,7 +12,7 @@
 #include "./Header/NCC_func.h"
 #include "./Header/PN.h"
 #include "./Header/dsPN.h"
-#include "./Header/TK.h",
+#include "./Header/TK.h"
 
 using namespace std;
 
@@ -126,8 +126,8 @@ int main()
                 int index = ds1.get_index_maphieu(maphieu);
                 if (index != -1)
                 {
-                    pn1 = ds1.getdsPN()[index]; 
-                    break;                      
+                    pn1 = ds1.getdsPN()[index];
+                    break;
                 }
                 cout << "[Lỗi] Mã phiếu không tồn tại" << endl;
             }
@@ -160,7 +160,7 @@ int main()
                     break;
                 }
 
-                PN_function(pn1, kho1, n1, &ds1,choice3);
+                PN_function(pn1, kho1, n1, &ds1, choice3);
                 stop_display();
             }
             break;
@@ -203,12 +203,41 @@ int main()
             break;
         }
         case 5:
+        {
             int choice5 = -1;
-            clear_display();
-            menu_TK();
-            readInt("Nhập lựa chọn thống kê: ",choice5);
-            TK_function(ds1,pn1,kho1,n1,choice5);
+            while (choice5 != 0)
+            {
+                clear_display();
+                menu_TK();
+
+                if (!readInt("Nhập lựa chọn hàng hóa: ", choice5))
+                {
+                    stop_display();
+                    continue;
+                }
+
+                if (choice5 == 0)
+                {
+                    // if (kho1.save_kho == 0)
+                    // {
+                    //     cout << "[!] File chưa được lưu." << endl
+                    //          << "Lưu file và thoát(Y/y) - Không lưu (Phím bất kỳ): ";
+                    //     string yes;
+                    //     getline(cin, yes);
+                    //     if (yes == "Y" || yes == "y")
+                    //     {
+                    //         luufile(kho1, "Data\\kho.txt");
+                    //         kho1.save_kho = 1;
+                    //     }
+                    // }
+                    break;
+                }
+
+                TK_function(ds1, kho1, n1, choice5);
+                stop_display();
+            }
             break;
+        }
         case 6:
             clear_display();
 

@@ -1,0 +1,104 @@
+HỆ THỐNG QUẢN LÝ KHO HÀNG [menu()]
+├── 1. Hàng hóa trong kho [menu_HH()]
+│   ├── 1. Xuất danh sách hàng hóa (Tất cả / Thực phẩm / Vật tư)
+│   ├── 2. Thêm vào kho
+│   ├── 3. Cập nhật thông tin
+│   ├── 4. Sắp xếp [menu_HH_Sort()]
+│   │   ├── 1. Theo mã hàng
+│   │   ├── 2. Theo tên hàng
+│   │   ├── 3. Theo loại hàng
+│   │   ├── 4. Theo đơn vị tính
+│   │   ├── 5. Theo số lượng
+│   │   ├── 6. Theo đơn giá
+│   │   └── 0. Quay lại menu Hàng hóa
+│   ├── 5. Tìm kiếm [menu_HH_Search()]
+│   │   ├── 1. Theo mã hàng
+│   │   ├── 2. Theo tên hàng
+│   │   ├── 3. Theo loại hàng
+│   │   ├── 4. Theo đơn vị tính
+│   │   └── 0. Quay lại menu Hàng hóa
+│   ├── 6. Xóa
+│   ├── 7. Tính thành tiền
+│   ├── 8. Lưu vào file
+│   └── 0. Quay về menu chính
+│
+├── 2. Nhà cung cấp [menu_NCC()]
+│   ├── 1. Xuất danh sách nhà cung cấp (Tất cả / Trong nước / Quốc tế)
+│   ├── 2. Thêm nhà cung cấp
+│   ├── 3. Cập nhật thông tin
+│   ├── 4. Sắp xếp [menu_NCC_Sort()]
+│   │   ├── 1. Sắp xếp theo mã NCC
+│   │   ├── 2. Sắp xếp theo tên NCC
+│   │   └── 0. Quay lại menu Nhà cung cấp
+│   ├── 5. Tìm kiếm [menu_NCC_Search()]
+│   │   ├── 1. Tìm kiếm theo mã NCC
+│   │   ├── 2. Tìm kiếm theo tên NCC
+│   │   └── 0. Quay lại menu Nhà cung cấp
+│   ├── 6. Xóa
+│   ├── 7. Lưu vào file (Bổ sung thêm để đồng bộ)
+│   └── 0. Quay về menu chính
+│
+├── 3. Chi tiết phiếu nhập [menu_PN()]
+│   ├── 1. Xuất hàng hóa của phiếu
+│   ├── 2. Thêm hàng hóa [menu_add_PN()]
+│   │   ├── 1. Một hàng hóa
+│   │   ├── 2. Nhiều hàng hóa
+│   │   └── 0. Quay lại menu Chi tiết phiếu nhập
+│   ├── 3. Cập nhật thông tin
+│   ├── 4. Sắp xếp [menu_PN_Sort()]
+│   │   ├── 1. Theo mã hàng
+│   │   ├── 2. Theo mã NCC
+│   │   ├── 3. Theo số lượng
+│   │   ├── 4. Theo đơn giá
+│   │   └── 0. Quay lại menu Chi tiết phiếu nhập
+│   ├── 5. Tìm kiếm (Theo mã hàng / Theo mã NCC)
+│   ├── 6. Xóa
+│   ├── 7. Lưu vào file (phieunhap.txt)
+│   └── 0. Quay về menu chính
+│
+├── 4. Danh sách phiếu nhập [menu_DSPN()]
+│   ├── 1. Xuất danh sách phiếu nhập
+│   ├── 2. Thêm phiếu nhập
+│   ├── 3. Cập nhật thông tin
+│   ├── 4. Sắp xếp [menu_DSPN_Sort()]
+│   │   ├── 1. Theo mã phiếu
+│   │   ├── 2. Theo số lượng
+│   │   ├── 3. Theo ngày lập phiếu (Gợi ý mở rộng)
+│   │   └── 0. Quay lại menu Danh sách phiếu nhập
+│   ├── 5. Tìm kiếm (Theo mã phiếu / Theo ngày nhập)
+│   ├── 6. Xóa
+│   ├── 7. Lưu vào file (dspn.txt)
+│   └── 0. Quay về menu chính
+│
+├── 5. Báo cáo và thống kê [menu_TK()]
+│   ├── 1. Thống kê nhập hàng [menu_TK_NH()]
+│   │   ├── 1. Tổng chi phí nhập hàng [menu_TK_NH_COST()]
+│   │   │   ├── 1. Theo ngày
+│   │   │   ├── 2. Trong tháng
+│   │   │   ├── 3. Khoảng thời gian (Từ ngày A đến ngày B)
+│   │   │   └── 0. Quay lại Thống kê nhập hàng
+│   │   ├── 2. Phiếu nhập có giá trị cao nhất / thấp nhất
+│   │   ├── 3. Tần suất nhập & giá nhập trung bình từng mặt hàng (Gợi ý mở rộng)
+│   │   └── 0. Quay lại menu Thống kê
+│   ├── 2. Thống kê tồn kho [menu_TK_Kho()]
+│   │   ├── 1. Tổng giá trị hàng tồn kho (Phân tách Thực phẩm vs Vật tư)
+│   │   ├── 2. Cảnh báo mặt hàng sắp hết (Dưới ngưỡng tồn kho)
+│   │   ├── 3. Cảnh báo thực phẩm hết hạn / sắp hết hạn sử dụng
+│   │   ├── 4. Top mặt hàng tồn kho nhiều nhất / ít nhất (Gợi ý mở rộng)
+│   │   └── 0. Quay lại menu Thống kê
+│   ├── 3. Thống kê nhà cung cấp [menu_TK_NCC()]
+│   │   ├── 1. Tỷ lệ nhà cung cấp trong nước và quốc tế
+│   │   ├── 2. Tổng giá trị giao dịch theo NCC (Kèm đối tác lớn nhất)
+│   │   └── 0. Quay lại menu Thống kê
+│   └── 0. Quay về menu chính
+│
+├── 7. Lưu toàn bộ dữ liệu vào file (Backup All)
+└── 0. Thoát chương trình
+
+
+
+1.1.1
+1.1.3
+1.2.2
+1.3
+2.3

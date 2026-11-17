@@ -67,12 +67,12 @@ void qlncc::show() const
     cout << "So luong nha cung cap: " << this->soluong_ncc << endl;
     cout << string(110, '-') << endl;
     cout << left
-         << setw(6) << "Loai"
-         << setw(10) << "Ma NCC"
-         << setw(32) << "Ten NCC"
+         << setw(6) << "Loại"
+         << setw(10) << "Mã NCC"
+         << setw(32) << "Tên NCC"
          << setw(15) << "SDT"
-         << setw(25) << "Dia Chi"
-         << setw(15) << "Thong tin them" << endl;
+         << setw(25) << "Địa chỉ"
+         << setw(15) << "Thông tin thêm" << endl;
     cout << string(110, '-') << endl;
     for (size_t i = 0; i < ql_ncc.size(); i++)
     {
@@ -210,10 +210,28 @@ void qlncc::sortByTenNCC(vector<unique_ptr<Ncc>> &list_ncc, int low, int high)
         sortByTenNCC(list_ncc, pi + 1, high);
     }
 }
-
-void qlncc::searchByMaNCC(const string &ma) const
+void qlncc::sortByLoaiNCC(vector<unique_ptr<Ncc>> &list_ncc, int low, int high)
 {
-    bool found = false;
+    if (low < high)
+    {
+        string pivot = list_ncc[high]->getloai();
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (list_ncc[j]->getloai() < pivot)
+            {
+                i++;
+                swap(list_ncc[i], list_ncc[j]);
+            }
+        }
+        swap(list_ncc[i + 1], list_ncc[high]);
+        int pi = i + 1;
+        sortByLoaiNCC(list_ncc, low, pi - 1);
+        sortByLoaiNCC(list_ncc, pi + 1, high);
+    }
+}
+int qlncc::searchByMaNCC(const string &ma) const
+{
     string searchMa = toLowerCase(ma);
 
     for (size_t i = 0; i < ql_ncc.size(); i++)
@@ -221,11 +239,34 @@ void qlncc::searchByMaNCC(const string &ma) const
         string currentMa = toLowerCase(ql_ncc[i]->getmancc());
         if (currentMa.find(searchMa) != string::npos)
         {
+            cout << string(95, '-') << endl;
+            cout << left << setw(8) << "Loai" << setw(12) << "Ma NCC"
+                 << setw(28) << "Ten NCC" << setw(15) << "SDT" << setw(15) << "Dia Chi"
+                 << setw(15) << "Thong tin them" << endl;
+            cout << string(95, '-') << endl;
+            ql_ncc[i]->show();
+            return i;
+        }
+    }
+    cout << "Khong tim thay nha cung cap co ma chua tu khoa: " << ma << endl;
+    return -1;
+}
+
+void qlncc::searchByLoaiNCC(const string &loai) const
+{
+    bool found = false;
+    string searchloai = toLowerCase(loai);
+
+    for (size_t i = 0; i < ql_ncc.size(); i++)
+    {
+        string currentloai = toLowerCase(ql_ncc[i]->getloai());
+        if (currentloai.find(searchloai) != string::npos)
+        {
             if (!found)
             {
                 cout << string(95, '-') << endl;
                 cout << left << setw(8) << "Loai" << setw(12) << "Ma NCC"
-                     << setw(28) << "Ten NCC" << setw(15) << "SDT" << setw(15) << "Dia Chi"
+                     << setw(28) << "loai NCC" << setw(15) << "SDT" << setw(15) << "Dia Chi"
                      << setw(15) << "Thong tin them" << endl;
                 cout << string(95, '-') << endl;
             }
@@ -235,14 +276,13 @@ void qlncc::searchByMaNCC(const string &ma) const
     }
     if (!found)
     {
-        cout << "Khong tim thay nha cung cap co ma chua tu khoa: " << ma << endl;
+        cout << "Khong tim thay nha cung cap co loai chua tu khoa: " << loai << endl;
     }
     else
     {
         cout << string(95, '=') << endl;
     }
 }
-
 void qlncc::searchByTenNCC(const string &ten) const
 {
     bool found = false;
@@ -318,4 +358,29 @@ void luufile(qlncc &ql, const string &filename)
         }
     }
     cout << "Luu file thanh cong!\n";
+}
+
+int qlncc::get_index_mancc(const string &ma) const
+{
+    for (int i = 0; i < this->soluong_ncc; i++)
+    {
+        if (this->ql_ncc[i]->getmancc() == ma)
+            return i;
+    }
+    return -1;
+}
+// Getter
+int &qlncc::getsoluongncc()
+{
+    return this->soluong_ncc;
+}
+vector<unique_ptr<Ncc>> &qlncc::getql_ncc()
+{
+    return this->ql_ncc;
+}
+
+// Setter
+void qlncc::setsoluongncc(const int &sl)
+{
+    this->soluong_ncc = sl;
 }

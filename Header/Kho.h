@@ -19,11 +19,13 @@ public:
 
     // SETTER
     void setsoluonghang(const int&);
-    void setkho(const Hanghoa&);
 
     // Tinh thanh tien
     void thanhtien();
-    
+    long long tongtien() const;
+    // canh bao 
+    void canhbao_sl();
+
     friend void docfile(Kho& k, const std::string& filename);
     friend void luufile(Kho& k, const std::string& filename);
     void show() const;

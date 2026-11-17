@@ -25,11 +25,23 @@ public:
     friend void luuphieunhap(Dsphieunhap &ds, const string &filename);
     friend void luufile(Dsphieunhap &ds, const std::string &filename);
 
-    // cost
-    friend long long TK_1thang(Dsphieunhap& ds);
-    friend long long TK_1ngay(Dsphieunhap& ds);
-    friend long long TK_khoangtg(Dsphieunhap& ds);
-    Phieunhap& max_PN();
+// Báo cáo và thống kế
+    // Thống kê hàng nhập
+        // cost
+        friend long long TK_1thang(Dsphieunhap& ds);
+        friend long long TK_1ngay(Dsphieunhap& ds);
+        friend long long TK_khoangtg(Dsphieunhap& ds);
+        Phieunhap max_PN();
+
+
+    // Thống kê tồn kho
+        
+
+    // Thống kê nhà cung cấp
+    void Tyle_Ncc(qlncc& n);
+    friend long long cost_PN(Phieunhap& pn);
+    long long tong_gtri_ncc(const std::string& ma);
+    void ncc_biggest(qlncc& n);
 
     void show() const;
     // thêm
@@ -46,7 +58,7 @@ public:
 
     // find
     void searchByMaPhieu(const std::string &ma) const;
-    void searchByNgayNhap(const Date &ngay) const;
+    void searchByNgayNhap( Date &ngay) const;
     // delete
     void deleteByMaPhieu(const std::string &ma);
 };
