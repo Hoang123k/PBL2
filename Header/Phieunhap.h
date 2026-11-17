@@ -32,6 +32,10 @@ public:
     friend void docfile(Phieunhap& pn, const std::string& filename);
     friend void luufile(Phieunhap& pn, const std::string& filename);
 
+    // cost
+    friend long long cost_PN(Phieunhap& pn);
+    
+
     void show() const;
 
     //them

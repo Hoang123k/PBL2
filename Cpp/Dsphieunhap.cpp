@@ -108,6 +108,43 @@ void luufile(Dsphieunhap& ds, const string& filename){
     file.close();
 }
 
+// long long TK_1ngay(Dsphieunhap& ds)
+// {
+//     Date date;
+//     cin >> date;
+    
+// }
+long long TK_1thang(Dsphieunhap& ds)
+{
+    long long cost=0;
+    for(int i=0;i<ds.getsoluongphieu();i++)
+    {   
+        cost += cost_PN(ds.getdsPN()[i]);
+
+    }
+    return cost;
+}
+
+Phieunhap& Dsphieunhap::max_PN()
+{
+    long long max = 0;
+    Phieunhap p;
+    long long temp;
+    for(int i=0;i<this->getsoluongphieu();i++)
+    {
+        temp = cost_PN(this->getdsPN()[i]);
+        if(max < temp)
+        {
+            max = temp;
+            p = this->getdsPN()[i];
+        }
+    }
+    if(max) return p;
+    cout << "Danh sách phiếu nhập rỗng" << endl;
+    return;
+}
+
+
 
 void Dsphieunhap::show() const {
     cout << string(50, '=') << endl;

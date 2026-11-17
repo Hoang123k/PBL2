@@ -12,6 +12,8 @@
 #include "./Header/NCC_func.h"
 #include "./Header/PN.h"
 #include "./Header/dsPN.h"
+#include "./Header/TK.h",
+
 using namespace std;
 
 int main()
@@ -200,6 +202,13 @@ int main()
             }
             break;
         }
+        case 5:
+            int choice5 = -1;
+            clear_display();
+            menu_TK();
+            readInt("Nhập lựa chọn thống kê: ",choice5);
+            TK_function(ds1,pn1,kho1,n1,choice5);
+            break;
         case 6:
             clear_display();
 

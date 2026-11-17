@@ -116,6 +116,17 @@ void luufile(Phieunhap &pn, const string &filename)
     file.close();
 }
 
+// cost
+long long cost_PN(Phieunhap& pn)
+{
+    long long cost=0;
+    for(int i=0;i<pn.getsoluong();i++)
+    {
+        cost+= pn.getPN()[i].getdongianhap();
+    }
+    return cost;
+}
+
 void Phieunhap::show() const
 {
     cout << left

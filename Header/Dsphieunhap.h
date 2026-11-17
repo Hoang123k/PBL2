@@ -25,6 +25,12 @@ public:
     friend void luuphieunhap(Dsphieunhap &ds, const string &filename);
     friend void luufile(Dsphieunhap &ds, const std::string &filename);
 
+    // cost
+    friend long long TK_1thang(Dsphieunhap& ds);
+    friend long long TK_1ngay(Dsphieunhap& ds);
+    friend long long TK_khoangtg(Dsphieunhap& ds);
+    Phieunhap& max_PN();
+
     void show() const;
     // thêm
     int get_index_maphieu( std::string);

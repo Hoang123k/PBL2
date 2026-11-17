@@ -170,8 +170,61 @@ inline void menu_DSPN_Sort()
     cout << " 0. Quay về màn hình chính" << endl;
     cout << "==============================================" << endl;
 }
-
-
+inline void menu_TK()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           BÁO CÁO VÀ THỐNG KÊ         " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Thống kê nhập hàng" << endl;
+    cout << " 2. Thống kê tồn kho" << endl;
+    cout << " 3. Thống kê nhà cung cấp" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;
+}
+inline void menu_TK_NH()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           THỐNG KÊ NHẬP HÀNG        " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Tổng chi phí nhập hàng" << endl;
+    cout << " 2. Phiếu nhập có giá trị cao nhất/ thấp nhất" << endl;
+    cout << " 3. Tần suất nhật" << endl;
+    cout << " 4. Giá nhập trung bình của từng mặt hàng" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;   
+}
+inline void menu_TK_NH_COST()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           CHI PHÍ NHẬP HÀNG        " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Theo ngày" << endl;
+    cout << " 2. Trong tháng" << endl;
+    cout << " 3. Khoảng thòi gian" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl; 
+}
+inline void menu_TK_Kho()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           THỐNG KÊ TỒN KHO        " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Tổng giá trị hàng tồn kho" << endl;
+    cout << " 2. Cảnh báo mặt hàng sắp hết" << endl;
+    cout << " 3. Cảnh báo thực phẩm hết hạn sử dụng" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;   
+    cout << "==============================================" << endl;
+}
+inline void menu_TK_NCC()
+{
+    cout << "\n==============================================" << endl;
+    cout << "           THỐNG KÊ NHÀ CUNG CẤP         " << endl;
+    cout << "==============================================" << endl;
+    cout << " 1. Tỷ lệ nhà cung cấp trong nước và quốc tế" << endl;
+    cout << " 2. Tổng giá trị giao dịch của các nhà cung cấp" << endl;
+    cout << " 0. Quay về màn hình chính" << endl;
+    cout << "==============================================" << endl;
+}
 inline void clear_display()
 {
     system("cls");
