@@ -113,9 +113,20 @@ inline void PN_function(Phieunhap &pn, Kho &kho, qlncc &ncc, Dsphieunhap *ds, in
         pn.deleteByMaHang(ma, kho, *ds);
         break;
     }
-    case 7:
-        luufile(pn, "Data\\phieunhap.txt");
+    case 7: // Thay số 7 bằng đúng số case "Lưu file" trong menu của bạn
+    {
+        // Đồng bộ dữ liệu vào ds
+        int idx = ds->get_index_maphieu(pn.getmaphieu());
+        if (idx != -1)
+        {
+            ds->getdsPN()[idx] = pn;
+        }
+
+        // Dùng con trỏ *ds để gọi hàm lưu toàn bộ
+        luuphieunhap(*ds, "Data\\phieunhap.txt");
+        pn.save_PN = 1;
         break;
+    }
     case 0:
     {
         char luu;

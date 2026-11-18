@@ -169,7 +169,12 @@ int main()
                         getline(cin, yes);
                         if (yes == "Y" || yes == "y")
                         {
-                            luufile(pn1, "Data\\phieunhap.txt");
+                            int idx = ds1.get_index_maphieu(pn1.getmaphieu());
+                            if (idx != -1)
+                            {
+                                ds1.getdsPN()[idx] = pn1;
+                            }
+                            luuphieunhap(ds1, "Data\\phieunhap.txt");
                             pn1.save_PN = 1;
                         }
                     }
@@ -236,12 +241,6 @@ int main()
             }
             break;
         }
-        case 6:
-            clear_display();
-            cout << "Da tai lai du lieu.\n";
-            stop_display();
-            break;
-
         default:
             cout << "Lua chon khong hop le. Vui long chon tu 0 den 5.\n";
             stop_display();

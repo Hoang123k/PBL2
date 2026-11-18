@@ -77,8 +77,11 @@ inline void DsPN_function(Dsphieunhap &ds, Kho &kho, qlncc &ncc, int &choice4)
         break;
     }
     case 7:
+    {
         luufile(ds, "Data\\dspn.txt");
+        luuphieunhap(ds, "Data\\phieunhap.txt");
         break;
+    }
     default:
     {
         clear_display();

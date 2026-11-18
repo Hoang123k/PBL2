@@ -16,8 +16,6 @@ inline void menu()
     cout << " 3. Chi tiết phiếu nhập" << endl;
     cout << " 4. Danh sách phiếu nhập" << endl;
     cout << " 5. Báo cáo và thống kê" << endl;
-    // cout << " 6. Tải lại dữ liệu (Reload từ File)" << endl;
-    cout << " 7. Lưu vào file" << endl;
     cout << " 0. Thoát chương trình                        " << endl;
     cout << "==============================================" << endl;
 }
