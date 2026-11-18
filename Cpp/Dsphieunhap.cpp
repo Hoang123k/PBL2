@@ -5,7 +5,7 @@
 #include "Dsphieunhap.h"
 #include "transfer.h"
 #include "ThucPham.h"
-
+#include "menu.h"
 using namespace std;
 
 Dsphieunhap::Dsphieunhap() : soluongphieu(0) {}
@@ -575,4 +575,199 @@ void Dsphieunhap::canhbao_hsd(Kho &kho)
     {
         cout << "Không có thực phẩm nào hết hạn.\n";
     }
+}
+// TK_nhaphang
+void Dsphieunhap::tk_ChiPhiNhap()
+{
+    int choice = -1;
+    while (true)
+    {
+        clear_display();
+        cout << string(60, '=') << "\n";
+        cout << setw(38) << right << "CHI PHÍ NHẬP HÀNG\n";
+        cout << string(60, '=') << "\n";
+        cout << "1. Theo ngày\n2. Trong tháng\n3. Khoảng thời gian\n0. Quay về màn hình chính\n";
+        cout << string(60, '=') << "\n";
+
+        cout << "Nhập lựa chọn: ";
+        cin >> choice;
+
+        if (choice == 0)
+            return;
+
+        long long total = 0;
+        if (choice == 1)
+        {
+            int d, m, y;
+            cout << "Nhập ngày, tháng, năm (cách nhau bởi khoảng trắng): ";
+            cin >> d >> m >> y;
+            for (size_t i = 0; i < dsPN.size(); i++)
+            {
+                Date date = dsPN[i].getngay();
+                if (date.getd() == d && date.getm() == m && date.gety() == y)
+                {
+                    for (size_t j = 0; j < dsPN[i].getPN().size(); j++)
+                    {
+                        total += dsPN[i].getPN()[j].getsoluongnhap() * dsPN[i].getPN()[j].getdongianhap();
+                    }
+                }
+            }
+            cout << "Tổng chi phí nhập hàng trong ngày " << d << "/" << m << "/" << y << ": " << total << " VND\n";
+        }
+        else if (choice == 2)
+        {
+            int m, y;
+            cout << "Nhập tháng, năm (cách nhau bởi khoảng trắng): ";
+            cin >> m >> y;
+            for (size_t i = 0; i < dsPN.size(); i++)
+            {
+                Date date = dsPN[i].getngay();
+                if (date.getm() == m && date.gety() == y)
+                {
+                    for (size_t j = 0; j < dsPN[i].getPN().size(); j++)
+                    {
+                        total += dsPN[i].getPN()[j].getsoluongnhap() * dsPN[i].getPN()[j].getdongianhap();
+                    }
+                }
+            }
+            cout << "Tổng chi phí nhập hàng trong tháng " << m << "/" << y << ": " << total << " VND\n";
+        }
+        else if (choice == 3)
+        {
+            int d1, m1, y1, d2, m2, y2;
+            cout << "Từ ngày, tháng, năm: ";
+            cin >> d1 >> m1 >> y1;
+            cout << "Đến ngày, tháng, năm: ";
+            cin >> d2 >> m2 >> y2;
+
+            int date1 = y1 * 10000 + m1 * 100 + d1;
+            int date2 = y2 * 10000 + m2 * 100 + d2;
+
+            for (size_t i = 0; i < dsPN.size(); i++)
+            {
+                Date date = dsPN[i].getngay();
+                int curDate = date.gety() * 10000 + date.getm() * 100 + date.getd();
+                if (curDate >= date1 && curDate <= date2)
+                {
+                    for (size_t j = 0; j < dsPN[i].getPN().size(); j++)
+                    {
+                        total += dsPN[i].getPN()[j].getsoluongnhap() * dsPN[i].getPN()[j].getdongianhap();
+                    }
+                }
+            }
+            cout << "Tổng chi phí nhập hàng từ " << d1 << "/" << m1 << "/" << y1
+                 << " đến " << d2 << "/" << m2 << "/" << y2 << ": " << total << " VND\n";
+        }
+
+        cout << "Nhấn phím bất kỳ để tiếp tục . . .";
+        cin.ignore();
+        cin.get();
+    }
+}
+
+void Dsphieunhap::tk_PhieuNhapMinMax()
+{
+    int type;
+    cout << "Nhập lựa chọn (Cao nhất - 1 / Thấp nhất - 2 / Quay lại - 0): ";
+    cin >> type;
+    if (type == 0)
+        return;
+
+    long long targetVal = (type == 1) ? -1 : 999999999999999LL;
+    int targetIdx = -1;
+
+    for (size_t i = 0; i < dsPN.size(); i++)
+    {
+        long long sum = 0;
+        for (size_t j = 0; j < dsPN[i].getPN().size(); j++)
+        {
+            sum += dsPN[i].getPN()[j].getsoluongnhap() * dsPN[i].getPN()[j].getdongianhap();
+        }
+
+        if (type == 1 && sum > targetVal)
+        {
+            targetVal = sum;
+            targetIdx = i;
+        }
+        if (type == 2 && sum > 0 && sum < targetVal)
+        {
+            targetVal = sum;
+            targetIdx = i;
+        }
+    }
+
+    if (targetIdx != -1)
+    {
+        cout << "\n=> Phiếu nhập có giá trị " << (type == 1 ? "CAO NHẤT" : "THẤP NHẤT")
+             << " là Phiếu: " << dsPN[targetIdx].getmaphieu()
+             << " (Tổng tiền: " << targetVal << " VND)\n";
+
+        dsPN[targetIdx].show();
+    }
+    else
+    {
+        cout << "\n[!] Không có dữ liệu phiếu nhập phù hợp!\n";
+    }
+}
+
+struct ThongKeMH
+{
+    string mahang;
+    int soLanNhap;
+    long long tongSoLuong;
+    long long tongTien;
+};
+
+void Dsphieunhap::tk_TanSuatVaGiaTB()
+{
+    vector<ThongKeMH> listTK;
+
+    for (size_t i = 0; i < dsPN.size(); i++)
+    {
+        for (size_t j = 0; j < dsPN[i].getPN().size(); j++)
+        {
+            string ma = dsPN[i].getPN()[j].getmahang();
+            long long sl = dsPN[i].getPN()[j].getsoluongnhap();
+            long long gia = dsPN[i].getPN()[j].getdongianhap();
+
+            bool found = false;
+            for (size_t k = 0; k < listTK.size(); k++)
+            {
+                if (listTK[k].mahang == ma)
+                {
+                    listTK[k].soLanNhap++;
+                    listTK[k].tongSoLuong += sl;
+                    listTK[k].tongTien += (sl * gia);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                listTK.push_back({ma, 1, sl, sl * gia});
+            }
+        }
+    }
+
+    clear_display();
+    cout << string(75, '=') << "\n";
+    cout << left << setw(15) << "Mã Hàng"
+         << setw(20) << "Tần suất nhập"
+         << setw(20) << "Tổng SL nhập"
+         << setw(20) << "Giá nhập TB" << "\n";
+    cout << string(75, '-') << "\n";
+
+    for (size_t k = 0; k < listTK.size(); k++)
+    {
+        long long giaTB = 0;
+        if (listTK[k].tongSoLuong > 0)
+        {
+            giaTB = listTK[k].tongTien / listTK[k].tongSoLuong;
+        }
+        cout << left << setw(15) << listTK[k].mahang
+             << setw(20) << listTK[k].soLanNhap
+             << setw(20) << listTK[k].tongSoLuong
+             << setw(20) << giaTB << "\n";
+    }
+    cout << string(75, '=') << "\n";
 }

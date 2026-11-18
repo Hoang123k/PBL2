@@ -28,15 +28,17 @@ public:
 
     // Báo cáo và thống kế
     // Thống kê hàng nhập
-        // cost
-        friend long long TK_1thang(Dsphieunhap& ds);
-        friend long long TK_1ngay(Dsphieunhap& ds);
-        friend long long TK_khoangtg(Dsphieunhap& ds);
-        void max_PN();
-
+    // cost
+    friend long long TK_1thang(Dsphieunhap &ds);
+    friend long long TK_1ngay(Dsphieunhap &ds);
+    friend long long TK_khoangtg(Dsphieunhap &ds);
+    void max_PN();
+    void tk_ChiPhiNhap();
+    void tk_PhieuNhapMinMax();
+    void tk_TanSuatVaGiaTB();
 
     // Thống kê tồn kho
-    void canhbao_hsd(Kho& kho);
+    void canhbao_hsd(Kho &kho);
 
     // Thống kê nhà cung cấp
     void Tyle_Ncc(qlncc &n);

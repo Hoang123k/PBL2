@@ -29,72 +29,20 @@ inline void TK_function(Dsphieunhap &ds, Kho &k, qlncc &n, int &choice5)
             case 0:
                 break;
             case 1:
-            {
-                int costchoice = -1;
-                while (costchoice != 0)
-                {
-                    clear_display();
-                    menu_TK_NH_COST();
-                    if (!readInt("Nhập lựa chọn: ", costchoice))
-                    {
-                        stop_display();
-                        continue;
-                    }
-                    switch (costchoice)
-                    {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        cout << "Tổng chi phí nhập hàng trong tháng: " << TK_1thang(ds) << "VND" << endl;
-                        system("pause");
-                        break;
-                    case 3:
-                        break;
-                    default:
-                        cout << "[Lỗi] Lựa chọn không hợp lệ" << endl;
-                        system("pause");
-                        break;
-                    }
-                }
+                ds.tk_ChiPhiNhap();
                 break;
-            }
             case 2:
-            {
-                int maxchoice = -1;
-                while (maxchoice != 0)
-                {
-                    clear_display();
-                    if (!readInt("Nhập lựa chọn (max - 1 / min - 2 / quay lại - 0): ", maxchoice))
-                    {
-                        stop_display();
-                        continue;
-                    }
-                    switch (maxchoice)
-                    {
-                    case 0:
-                        break;
-                    case 1:
-                        ds.max_PN();
-                        system("pause");
-                        break;
-                    case 2:
-                        break;
-                    default:
-                        cout << "[Lỗi] Lựa chọn không hợp lệ" << endl;
-                        system("pause");
-                        break;
-                    }
-                }
+                clear_display();
+                ds.tk_PhieuNhapMinMax();
+                stop_display();
                 break;
-            }
             case 3:
-
+                ds.tk_TanSuatVaGiaTB();
+                stop_display();
                 break;
             default:
                 cout << "[Lỗi] Lựa chọn không hợp lệ" << endl;
-                system("pause");
+                stop_display();
                 break;
             }
         }
